@@ -1,12 +1,12 @@
 package pl.mzlnk.autoconfigure.oauth2.server.resource.provider;
 
-import java.util.Map;
+import java.util.List;
 
 public class AuthenticationProviderProperties {
 
-    private Map<String, AuthenticationProvider> providers;
+    private List<OAuth2Provider> providers;
 
-    public Map<String, AuthenticationProvider> getProviders() {
+    public List<OAuth2Provider> getProviders() {
         return providers;
     }
 
