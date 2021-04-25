@@ -3,12 +3,11 @@ package pl.mzlnk.autoconfigure.oauth2.server.resource;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManagerResolver;
-import org.springframework.security.authentication.AuthenticationProvider;
+import pl.mzlnk.autoconfigure.oauth2.server.resource.api.AuthenticationProviderMatcher;
 import pl.mzlnk.autoconfigure.oauth2.server.resource.provider.AuthenticationProviderProperties;
 import pl.mzlnk.autoconfigure.oauth2.server.resource.resolver.MultitenantAuthenticationManagerResolver;
 
-import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @Configuration
 public class AutoConfiguration {
@@ -20,8 +19,9 @@ public class AutoConfiguration {
     }
 
     @Bean
-    public MultitenantAuthenticationManagerResolver multitenantAuthenticationManagerResolver(AuthenticationProviderProperties properties) {
-        return new MultitenantAuthenticationManagerResolver(properties);
+    public MultitenantAuthenticationManagerResolver multitenantAuthenticationManagerResolver(AuthenticationProviderProperties properties,
+                                                                                             List<AuthenticationProviderMatcher> matchers) {
+        return new MultitenantAuthenticationManagerResolver(properties, matchers);
     }
 
 }
