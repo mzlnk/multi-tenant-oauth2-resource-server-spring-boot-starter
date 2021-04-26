@@ -7,7 +7,7 @@
     <groupId>pl.mzlnk</groupId>
     <artifactId>multi-tenant-oauth2-resource-server-spring-boot-autoconfigure</artifactId>
     <version>1.0</version>
-    <packaging>pom</packaging>
+
     <name>multi-tenant-oauth2-resource-server-spring-boot-autoconfiguration</name>
 
     <properties>

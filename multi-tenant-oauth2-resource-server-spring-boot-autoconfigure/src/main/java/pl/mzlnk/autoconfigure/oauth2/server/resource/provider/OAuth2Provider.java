@@ -33,4 +33,27 @@ public class OAuth2Provider {
         return introspectUri;
     }
 
+    public void setProviderId(String providerId) {
+        this.providerId = providerId;
+    }
+
+    public void setTokenType(TokenType tokenType) {
+        this.tokenType = tokenType;
+    }
+
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
+    }
+
+    public void setClientSecret(String clientSecret) {
+        this.clientSecret = clientSecret;
+    }
+
+    public void setJwtIssuerUri(String jwtIssuerUri) {
+        this.jwtIssuerUri = jwtIssuerUri;
+    }
+
+    public void setIntrospectUri(String introspectUri) {
+        this.introspectUri = introspectUri;
+    }
 }

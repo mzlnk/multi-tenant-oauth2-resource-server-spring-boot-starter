@@ -10,4 +10,8 @@ public class AuthenticationProviderProperties {
         return providers;
     }
 
+    public void setProviders(List<OAuth2Provider> providers) {
+        this.providers = providers;
+    }
+
 }

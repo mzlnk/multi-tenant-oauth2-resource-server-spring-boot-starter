@@ -1,0 +1,20 @@
+server:
+  port: 9000
+
+oauth2:
+  resource:
+    server:
+      providers:
+        - providerId: keycloak-auth-provider-1
+          tokenType: JWT
+          jwtIssuerUri: "http://localhost:10001/auth/realms/auth-provider-1"
+
+        - providerId: keycloak-auth-provider-2
+          tokenType: JWT
+          jwtIssuerUri: "http://localhost:10002/auth/realms/auth-provider-2"
+
+        - providerId: keycloak-auth-provider-3
+          tokenType: OPAQUE
+          clientId: oauth2-demo
+          clientSecret: ac1800f9-29d0-40f8-9455-b97d62c38906
+          introspectUri: "http://localhost:10003/auth/realms/auth-provider-3/protocol/openid-connect/token/introspect"

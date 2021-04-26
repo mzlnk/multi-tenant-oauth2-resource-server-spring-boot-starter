@@ -38,7 +38,7 @@ public class MultitenantAuthenticationManagerResolver implements AuthenticationM
                 .findAny()
                 .map(this::opaqueTokenAuthenticationProvider)
                 .map(p -> p.authenticate(request))
-                .orElse(jwt().resolve(httpRequest).authenticate(request));
+                .orElseGet(() -> jwt().resolve(httpRequest).authenticate(request));
     }
 
     private AuthenticationProvider opaqueTokenAuthenticationProvider(OAuth2Provider provider) {
@@ -55,7 +55,7 @@ public class MultitenantAuthenticationManagerResolver implements AuthenticationM
         return new JwtIssuerAuthenticationManagerResolver(
                 this.providers.values()
                         .stream()
-                        .filter(p -> p.getTokenType() == TokenType.OPAQUE)
+                        .filter(p -> p.getTokenType() == TokenType.JWT)
                         .map(OAuth2Provider::getJwtIssuerUri)
                         .collect(Collectors.toList())
         );
