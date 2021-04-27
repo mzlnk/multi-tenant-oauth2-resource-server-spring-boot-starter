@@ -10,7 +10,6 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Component
-@Qualifier
 public @interface Matcher {
 
     @AliasFor(annotation = Component.class)

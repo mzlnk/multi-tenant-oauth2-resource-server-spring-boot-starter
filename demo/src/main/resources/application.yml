@@ -5,9 +5,11 @@ oauth2:
   resource:
     server:
       providers:
-        - providerId: keycloak-auth-provider-1
-          tokenType: JWT
-          jwtIssuerUri: "http://localhost:10001/auth/realms/auth-provider-1"
+        - provider-id: keycloak-auth-provider-1
+          token-type: JWT
+          jwt-issuer: "http://localhost:10001/auth/realms/auth-provider-1"
+          jwt-issuer-uri: "http://localhost:10001/auth/realms/auth-provider-1"
+          jwt-public-key: "classpath:keys/keycloak-3.pub"
 
         - providerId: keycloak-auth-provider-2
           tokenType: JWT

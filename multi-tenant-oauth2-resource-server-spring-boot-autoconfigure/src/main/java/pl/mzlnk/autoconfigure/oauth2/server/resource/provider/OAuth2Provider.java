@@ -1,13 +1,26 @@
 package pl.mzlnk.autoconfigure.oauth2.server.resource.provider;
 
+import pl.mzlnk.autoconfigure.oauth2.server.resource.api.AuthenticationProviderMatcher;
+
+import java.security.interfaces.RSAPublicKey;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 public class OAuth2Provider {
 
     private String providerId;
     private TokenType tokenType;
+
     private String clientId;
     private String clientSecret;
+
+    private String jwtIssuer;
     private String jwtIssuerUri;
+    private RSAPublicKey jwtPublicKey;
+
     private String introspectUri;
+    private List<AuthenticationProviderMatcher> matchers = new ArrayList<>();
 
     public String getProviderId() {
         return providerId;
@@ -25,12 +38,24 @@ public class OAuth2Provider {
         return clientSecret;
     }
 
+    public String getJwtIssuer() {
+        return jwtIssuer;
+    }
+
     public String getJwtIssuerUri() {
         return jwtIssuerUri;
     }
 
+    public RSAPublicKey getJwtPublicKey() {
+        return jwtPublicKey;
+    }
+
     public String getIntrospectUri() {
         return introspectUri;
+    }
+
+    public List<AuthenticationProviderMatcher> getMatchers() {
+        return Collections.unmodifiableList(this.matchers);
     }
 
     public void setProviderId(String providerId) {
@@ -49,11 +74,36 @@ public class OAuth2Provider {
         this.clientSecret = clientSecret;
     }
 
+    public void setJwtIssuer(String jwtIssuer) {
+        this.jwtIssuer = jwtIssuer;
+    }
+
     public void setJwtIssuerUri(String jwtIssuerUri) {
         this.jwtIssuerUri = jwtIssuerUri;
+    }
+
+    public void setJwtPublicKey(RSAPublicKey jwtPublicKey) {
+        this.jwtPublicKey = jwtPublicKey;
     }
 
     public void setIntrospectUri(String introspectUri) {
         this.introspectUri = introspectUri;
     }
+
+    public void setMatchers(List<AuthenticationProviderMatcher> matchers) {
+        this.matchers.addAll(matchers);
+    }
+
+    public void addMatcher(AuthenticationProviderMatcher matcher) {
+        this.matchers.add(matcher);
+    }
+
+    public boolean isRelatedToOpaqueToken() {
+        return this.tokenType == TokenType.OPAQUE;
+    }
+
+    public boolean isRelatedToJwtToken() {
+        return this.tokenType == TokenType.JWT;
+    }
+
 }

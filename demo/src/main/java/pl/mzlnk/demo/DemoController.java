@@ -33,7 +33,6 @@ public class DemoController {
 
     @GetMapping("/non-authorized/cookies")
     public List<Cookie> getCookies(HttpServletRequest request) {
-        SecurityContextHolder.getContext()
         return Stream.of(request.getCookies())
                 .collect(Collectors.toList());
     }
