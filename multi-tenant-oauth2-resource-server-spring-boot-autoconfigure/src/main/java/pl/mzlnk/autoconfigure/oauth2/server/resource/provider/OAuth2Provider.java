@@ -1,13 +1,27 @@
 package pl.mzlnk.autoconfigure.oauth2.server.resource.provider;
 
 import pl.mzlnk.autoconfigure.oauth2.server.resource.api.AuthenticationProviderMatcher;
+import pl.mzlnk.autoconfigure.oauth2.server.resource.api.matcher.CookieAuthenticationProviderMatcher;
+import pl.mzlnk.autoconfigure.oauth2.server.resource.api.matcher.HeaderAuthenticationProviderMatcher;
 
 import java.security.interfaces.RSAPublicKey;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class OAuth2Provider {
+
+    private static final AuthenticationProviderMatcherConverter converter;
+
+    // TODO: refactor to use Spring Context
+    static {
+        converter = new AuthenticationProviderMatcherConverter(List.of(
+                new CookieAuthenticationProviderMatcher.Factory(),
+                new HeaderAuthenticationProviderMatcher.Factory()
+        ));
+    }
 
     private String providerId;
     private TokenType tokenType;
@@ -90,8 +104,10 @@ public class OAuth2Provider {
         this.introspectUri = introspectUri;
     }
 
-    public void setMatchers(List<AuthenticationProviderMatcher> matchers) {
-        this.matchers.addAll(matchers);
+    public void setMatchers(List<Map<String, String>> matchers) {
+        this.matchers = matchers.stream()
+                .map(converter::convert)
+                .collect(Collectors.toList());
     }
 
     public void addMatcher(AuthenticationProviderMatcher matcher) {

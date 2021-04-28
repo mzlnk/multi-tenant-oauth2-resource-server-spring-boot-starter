@@ -20,3 +20,13 @@ oauth2:
           clientId: oauth2-demo
           clientSecret: ac1800f9-29d0-40f8-9455-b97d62c38906
           introspectUri: "http://localhost:10003/auth/realms/auth-provider-3/protocol/openid-connect/token/introspect"
+          matchers:
+            - type: COOKIE
+              cookieName: "issuer"
+              cookieValue: "k-3"
+            - type: COOKIE
+              cookieName: "lifetime"
+              cookieValue: "3000"
+            - type: HEADER
+              headerName: "Host"
+              headerValue: "www.abc.com"
