@@ -1,19 +1,19 @@
-package pl.mzlnk.autoconfigure.oauth2.server.resource.api.matcher;
+package pl.mzlnk.autoconfigure.oauth2.server.resource.tenant.matcher;
 
 import org.springframework.util.Assert;
-import pl.mzlnk.autoconfigure.oauth2.server.resource.api.AuthenticationProviderMatcher;
 import pl.mzlnk.autoconfigure.oauth2.server.resource.api.MatcherFactory;
+import pl.mzlnk.autoconfigure.oauth2.server.resource.properties.AuthenticationTenantDetails;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 import java.util.Optional;
 
-public class HeaderAuthenticationProviderMatcher extends AbstractAuthenticationProviderMatcher {
+public class HeaderAuthenticationTenantMatcher extends AbstractAuthenticationTenantMatcher {
 
     private final String headerName;
     private final String headerValue;
 
-    public HeaderAuthenticationProviderMatcher(String providerId, String headerName, String headerValue) {
+    public HeaderAuthenticationTenantMatcher(String providerId, String headerName, String headerValue) {
         super(providerId);
         this.headerName = headerName;
         this.headerValue = headerValue;
@@ -26,8 +26,7 @@ public class HeaderAuthenticationProviderMatcher extends AbstractAuthenticationP
                 .orElse(false);
     }
 
-    @MatcherFactory
-    public static class Factory implements AuthenticationProviderMatcherFactory {
+    public static class Factory implements AuthenticationTenantMatcher.Factory {
 
         @Override
         public String getType() {
@@ -35,14 +34,14 @@ public class HeaderAuthenticationProviderMatcher extends AbstractAuthenticationP
         }
 
         @Override
-        public AuthenticationProviderMatcher create(String providerId, Map<String, String> properties) {
-            var headerName = properties.get("headerName");
-            var headerValue = properties.get("headerValue");
+        public AuthenticationTenantMatcher create(String providerId, AuthenticationTenantDetails.MatcherDetails matcherDetails) {
+            var headerName = matcherDetails.getProperty("headerName");
+            var headerValue = matcherDetails.getProperty("headerValue");
 
             Assert.notNull(headerName, "Property headerName cannot be null");
             Assert.notNull(headerValue, "Property headerValue cannot be null");
 
-            return new HeaderAuthenticationProviderMatcher(providerId, headerName, headerValue);
+            return new HeaderAuthenticationTenantMatcher(providerId, headerName, headerValue);
         }
     }
 

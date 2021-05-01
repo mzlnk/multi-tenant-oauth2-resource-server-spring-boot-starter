@@ -1,27 +1,35 @@
 package pl.mzlnk.demo;
 
-import pl.mzlnk.autoconfigure.oauth2.server.resource.api.AuthenticationProviderMatcher;
+import pl.mzlnk.autoconfigure.oauth2.server.resource.api.MatcherFactory;
+import pl.mzlnk.autoconfigure.oauth2.server.resource.properties.AuthenticationTenantDetails;
+import pl.mzlnk.autoconfigure.oauth2.server.resource.tenant.matcher.AuthenticationTenantMatcher;
 import pl.mzlnk.autoconfigure.oauth2.server.resource.api.Matcher;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.stream.Stream;
 
-@Matcher
-public class Keycloak3Matcher implements AuthenticationProviderMatcher {
+@MatcherFactory
+public class Keycloak3Matcher implements AuthenticationTenantMatcher.Factory {
 
     @Override
-    public String getProviderId() {
-        return "keycloak-auth-provider-3";
+    public String getType() {
+        return "TEST";
     }
 
     @Override
-    public boolean matches(HttpServletRequest request) {
-        if(request.getCookies() == null) {
-            return false;
-        }
+    public AuthenticationTenantMatcher create(String providerId, AuthenticationTenantDetails.MatcherDetails matcherDetails) {
+        return new AuthenticationTenantMatcher() {
+            @Override
+            public String getProviderId() {
+                return providerId;
+            }
 
-        return Stream.of(request.getCookies())
-                .anyMatch(cookie -> cookie.getName().equals("issuer") && cookie.getValue().equals("keycloak-3"));
+            @Override
+            public boolean matches(HttpServletRequest request) {
+                var method = request.getMethod();
+                var props = matcherDetails.getProperty("method");
+                return method.equals(props);
+            }
+        };
     }
-
 }

@@ -1,1 +1,3 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=pl.mzlnk.autoconfigure.oauth2.server.resource.AutoConfiguration
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  pl.mzlnk.autoconfigure.oauth2.server.resource.AutoConfiguration,\
+  pl.mzlnk.autoconfigure.oauth2.server.resource.FactoriesAutoConfiguration

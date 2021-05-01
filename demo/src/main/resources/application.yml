@@ -4,7 +4,7 @@ server:
 oauth2:
   resource:
     server:
-      providers:
+      tenants:
         - provider-id: keycloak-auth-provider-1
           token-type: JWT
           jwt-issuer: "http://localhost:10001/auth/realms/auth-provider-1"
@@ -18,7 +18,7 @@ oauth2:
         - providerId: keycloak-auth-provider-3
           tokenType: OPAQUE
           clientId: oauth2-demo
-          clientSecret: ac1800f9-29d0-40f8-9455-b97d62c38906
+          clientSecret: 4f8cdf09-24a1-4837-9cf1-19917b3b20bb
           introspectUri: "http://localhost:10003/auth/realms/auth-provider-3/protocol/openid-connect/token/introspect"
           matchers:
             - type: COOKIE

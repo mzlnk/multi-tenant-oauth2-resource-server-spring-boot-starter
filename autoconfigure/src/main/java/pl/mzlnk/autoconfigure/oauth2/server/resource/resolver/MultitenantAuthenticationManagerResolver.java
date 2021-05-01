@@ -2,21 +2,22 @@ package pl.mzlnk.autoconfigure.oauth2.server.resource.resolver;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationManagerResolver;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.oauth2.server.resource.authentication.OpaqueTokenAuthenticationProvider;
 import org.springframework.security.oauth2.server.resource.introspection.NimbusOpaqueTokenIntrospector;
-import pl.mzlnk.autoconfigure.oauth2.server.resource.api.AuthenticationProviderMatcher;
-import pl.mzlnk.autoconfigure.oauth2.server.resource.provider.AuthenticationProviderProperties;
-import pl.mzlnk.autoconfigure.oauth2.server.resource.provider.OAuth2Provider;
-import pl.mzlnk.autoconfigure.oauth2.server.resource.provider.TokenType;
-import pl.mzlnk.autoconfigure.oauth2.server.resource.security.jwt.JwtAuthenticationManagerResolver;
+import pl.mzlnk.autoconfigure.oauth2.server.resource.properties.AuthenticationProviderProperties;
+import pl.mzlnk.autoconfigure.oauth2.server.resource.resolver.jwt.JwtAuthenticationManagerResolver;
+import pl.mzlnk.autoconfigure.oauth2.server.resource.tenant.AuthenticationTenant;
+import pl.mzlnk.autoconfigure.oauth2.server.resource.tenant.AuthenticationTenantFactory;
+import pl.mzlnk.autoconfigure.oauth2.server.resource.tenant.JwtAuthenticationTenant;
+import pl.mzlnk.autoconfigure.oauth2.server.resource.tenant.OpaqueAuthenticationTenant;
+import pl.mzlnk.autoconfigure.oauth2.server.resource.tenant.matcher.AuthenticationTenantMatcher;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -24,61 +25,67 @@ public class MultitenantAuthenticationManagerResolver implements AuthenticationM
 
     private final Log log = LogFactory.getLog(this.getClass());
 
-    private final List<OAuth2Provider> providers;
+    private final List<AuthenticationTenant> tenants;
+    private final Map<String, AuthenticationProvider> opaqueProviders;
+    private final JwtAuthenticationManagerResolver jwtResolver;
 
-    public MultitenantAuthenticationManagerResolver(AuthenticationProviderProperties providerProperties,
-                                                    List<AuthenticationProviderMatcher> matchers) {
+    public MultitenantAuthenticationManagerResolver(AuthenticationProviderProperties tenantsProperties,
+                                                    List<AuthenticationTenantMatcher> externalMatchers,
+                                                    AuthenticationTenantFactory tenantFactory) {
 
-        this.providers = combine(providerProperties.getProviders(), matchers);
+        this.tenants = tenantFactory.create(tenantsProperties.getTenants(), externalMatchers);
+        this.opaqueProviders = opaqueTokenAuthenticationProviders();
+        this.jwtResolver = jwtResolver();
     }
 
     @Override
     public AuthenticationManager resolve(HttpServletRequest httpRequest) {
-        return request -> this.providers.stream()
-                .filter(OAuth2Provider::isRelatedToOpaqueToken)
+        return request -> this.tenants.stream()
+                .filter(AuthenticationTenant::isRelatedToOpaqueToken)
                 .filter(p -> p.getMatchers().stream().anyMatch(matcher -> matcher.matches(httpRequest)))
                 .findAny()
-                .map(this::opaqueTokenAuthenticationProvider)
+                .map(AuthenticationTenant::getProviderId)
+                .map(this::getOpaqueProvider)
                 .map(p -> p.authenticate(request))
-                .orElseGet(() -> jwt().resolve(httpRequest).authenticate(request));
+                .orElseGet(() -> this.jwtResolver.resolve(httpRequest).authenticate(request));
     }
 
-    private List<OAuth2Provider> combine(List<OAuth2Provider> providers, List<AuthenticationProviderMatcher> matchers) {
-        var providersMap = providers.stream().collect(Collectors.toMap(OAuth2Provider::getProviderId, p -> p));
-
-        matchers.stream()
-                .filter(matcher -> {
-                    if (!providersMap.containsKey(matcher.getProviderId())) {
-                        log.warn("Found matcher for provider which has not been declared");
-                        return false;
-                    }
-                    return true;
-                })
-                .forEach(matcher -> providersMap.get(matcher.getProviderId()).addMatcher(matcher));
-
-        return new ArrayList<>(providersMap.values());
+    private AuthenticationProvider getOpaqueProvider(String providerId) {
+        var result = this.opaqueProviders.get(providerId);
+        return result;
     }
 
-    private AuthenticationProvider opaqueTokenAuthenticationProvider(OAuth2Provider provider) {
-        var introspector = new NimbusOpaqueTokenIntrospector(
-                provider.getIntrospectUri(),
-                provider.getClientId(),
-                provider.getClientSecret()
-        );
+    private Map<String, AuthenticationProvider> opaqueTokenAuthenticationProviders() {
+        return this.tenants.stream()
+                .filter(AuthenticationTenant::isRelatedToOpaqueToken)
+                .map(OpaqueAuthenticationTenant.class::cast)
+                .collect(Collectors.toMap(
+                        OpaqueAuthenticationTenant::getProviderId,
+                        tenant -> {
+                            var introspector = new NimbusOpaqueTokenIntrospector(
+                                    tenant.getIntrospectUri(),
+                                    tenant.getClientId(),
+                                    tenant.getClientSecret()
+                            );
 
-        return new OpaqueTokenAuthenticationProvider(introspector);
+                            return new OpaqueTokenAuthenticationProvider(introspector);
+                        }
+                ));
     }
 
-    private JwtAuthenticationManagerResolver jwt() {
-        var publicKeys = this.providers
-                .stream()
+    private JwtAuthenticationManagerResolver jwtResolver() {
+        var jwtTenants = this.tenants.stream()
+                .filter(AuthenticationTenant::isRelatedToJwtToken)
+                .map(JwtAuthenticationTenant.class::cast)
+                .collect(Collectors.toList());
+
+        var publicKeys = jwtTenants.stream()
                 .filter(p -> p.getJwtIssuer() != null)
                 .filter(p -> p.getJwtPublicKey() != null)
-                .collect(Collectors.toMap(OAuth2Provider::getJwtIssuer, OAuth2Provider::getJwtPublicKey));
+                .collect(Collectors.toMap(JwtAuthenticationTenant::getJwtIssuer, JwtAuthenticationTenant::getJwtPublicKey));
 
-        var trustedIssuers = this.providers.stream()
-                .filter(p -> p.getTokenType() == TokenType.JWT)
-                .map(OAuth2Provider::getJwtIssuerUri)
+        var trustedIssuers = jwtTenants.stream()
+                .map(JwtAuthenticationTenant::getJwtIssuerUri)
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
 

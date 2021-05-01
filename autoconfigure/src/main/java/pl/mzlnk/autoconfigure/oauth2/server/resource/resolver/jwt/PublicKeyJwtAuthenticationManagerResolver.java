@@ -1,4 +1,4 @@
-package pl.mzlnk.autoconfigure.oauth2.server.resource.security.jwt;
+package pl.mzlnk.autoconfigure.oauth2.server.resource.resolver.jwt;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

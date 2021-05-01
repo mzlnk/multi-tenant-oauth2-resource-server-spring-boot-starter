@@ -1,20 +1,20 @@
-package pl.mzlnk.autoconfigure.oauth2.server.resource.api.matcher;
+package pl.mzlnk.autoconfigure.oauth2.server.resource.tenant.matcher;
 
 import org.springframework.util.Assert;
-import pl.mzlnk.autoconfigure.oauth2.server.resource.api.AuthenticationProviderMatcher;
 import pl.mzlnk.autoconfigure.oauth2.server.resource.api.MatcherFactory;
+import pl.mzlnk.autoconfigure.oauth2.server.resource.properties.AuthenticationTenantDetails;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.stream.Stream;
 
-public class CookieAuthenticationProviderMatcher extends AbstractAuthenticationProviderMatcher {
+public class CookieAuthenticationTenantMatcher extends AbstractAuthenticationTenantMatcher {
 
     private final String cookieName;
     private final String cookieValue;
 
-    public CookieAuthenticationProviderMatcher(String providerId, String cookieName, String cookieValue) {
+    public CookieAuthenticationTenantMatcher(String providerId, String cookieName, String cookieValue) {
         super(providerId);
 
         this.cookieName = cookieName;
@@ -28,22 +28,21 @@ public class CookieAuthenticationProviderMatcher extends AbstractAuthenticationP
                 .anyMatch(cookie -> cookie.getName().equals(this.cookieName) && cookie.getValue().equals(this.cookieValue));
     }
 
-    @MatcherFactory
-    public static class Factory implements AuthenticationProviderMatcherFactory {
+    public static class Factory implements AuthenticationTenantMatcher.Factory {
 
         @Override
         public String getType() {
             return "COOKIE";
         }
         @Override
-        public AuthenticationProviderMatcher create(String providerId, Map<String, String> properties) {
-            var cookieName = properties.get("cookieName");
-            var cookieValue = properties.get("cookieValue");
+        public AuthenticationTenantMatcher create(String providerId, AuthenticationTenantDetails.MatcherDetails matcherDetails) {
+            var cookieName = matcherDetails.getProperty("cookieName");
+            var cookieValue = matcherDetails.getProperty("cookieValue");
 
             Assert.notNull(cookieName, "Property cookieName cannot be null");
             Assert.notNull(cookieValue, "Property cookieValue cannot be null");
 
-            return new CookieAuthenticationProviderMatcher(providerId, cookieName, cookieValue);
+            return new CookieAuthenticationTenantMatcher(providerId, cookieName, cookieValue);
         }
     }
 

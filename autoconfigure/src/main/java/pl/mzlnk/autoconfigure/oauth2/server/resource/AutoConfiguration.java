@@ -3,12 +3,12 @@ package pl.mzlnk.autoconfigure.oauth2.server.resource;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.convert.converter.Converter;
-import pl.mzlnk.autoconfigure.oauth2.server.resource.api.AuthenticationProviderMatcher;
-import pl.mzlnk.autoconfigure.oauth2.server.resource.api.matcher.AuthenticationProviderMatcherFactory;
-import pl.mzlnk.autoconfigure.oauth2.server.resource.provider.AuthenticationProviderMatcherConverter;
-import pl.mzlnk.autoconfigure.oauth2.server.resource.provider.AuthenticationProviderProperties;
+import pl.mzlnk.autoconfigure.oauth2.server.resource.properties.AuthenticationProviderProperties;
 import pl.mzlnk.autoconfigure.oauth2.server.resource.resolver.MultitenantAuthenticationManagerResolver;
+import pl.mzlnk.autoconfigure.oauth2.server.resource.tenant.AuthenticationTenant;
+import pl.mzlnk.autoconfigure.oauth2.server.resource.tenant.AuthenticationTenantFactory;
+import pl.mzlnk.autoconfigure.oauth2.server.resource.tenant.matcher.AuthenticationTenantMatcher;
+import pl.mzlnk.autoconfigure.oauth2.server.resource.tenant.matcher.AuthenticationTenantMatcherFactory;
 
 import java.util.List;
 
@@ -16,8 +16,14 @@ import java.util.List;
 public class AutoConfiguration {
 
     @Bean
-    public AuthenticationProviderMatcherConverter authenticationProviderConverter(List<AuthenticationProviderMatcherFactory> factories) {
-        return new AuthenticationProviderMatcherConverter(factories);
+    public AuthenticationTenantMatcherFactory authenticationTenantMatcherFactory(List<AuthenticationTenantMatcher.Factory> factories) {
+        return new AuthenticationTenantMatcherFactory(factories);
+    }
+
+    @Bean
+    public AuthenticationTenantFactory authenticationTenantFactory(List<AuthenticationTenant.Factory> factories,
+                                                                   AuthenticationTenantMatcherFactory matcherFactory) {
+        return new AuthenticationTenantFactory(factories, matcherFactory);
     }
 
     @Bean
@@ -28,8 +34,9 @@ public class AutoConfiguration {
 
     @Bean
     public MultitenantAuthenticationManagerResolver multitenantAuthenticationManagerResolver(AuthenticationProviderProperties properties,
-                                                                                             List<AuthenticationProviderMatcher> matchers) {
-        return new MultitenantAuthenticationManagerResolver(properties, matchers);
+                                                                                             List<AuthenticationTenantMatcher> matchers,
+                                                                                             AuthenticationTenantFactory tenantFactory) {
+        return new MultitenantAuthenticationManagerResolver(properties, matchers, tenantFactory);
     }
 
 }

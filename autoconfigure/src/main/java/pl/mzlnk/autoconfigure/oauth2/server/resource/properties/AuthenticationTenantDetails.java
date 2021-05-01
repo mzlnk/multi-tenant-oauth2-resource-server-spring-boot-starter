@@ -1,27 +1,10 @@
-package pl.mzlnk.autoconfigure.oauth2.server.resource.provider;
-
-import pl.mzlnk.autoconfigure.oauth2.server.resource.api.AuthenticationProviderMatcher;
-import pl.mzlnk.autoconfigure.oauth2.server.resource.api.matcher.CookieAuthenticationProviderMatcher;
-import pl.mzlnk.autoconfigure.oauth2.server.resource.api.matcher.HeaderAuthenticationProviderMatcher;
+package pl.mzlnk.autoconfigure.oauth2.server.resource.properties;
 
 import java.security.interfaces.RSAPublicKey;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
-public class OAuth2Provider {
-
-    private static final AuthenticationProviderMatcherConverter converter;
-
-    // TODO: refactor to use Spring Context
-    static {
-        converter = new AuthenticationProviderMatcherConverter(List.of(
-                new CookieAuthenticationProviderMatcher.Factory(),
-                new HeaderAuthenticationProviderMatcher.Factory()
-        ));
-    }
+public class AuthenticationTenantDetails {
 
     private String providerId;
     private TokenType tokenType;
@@ -34,7 +17,7 @@ public class OAuth2Provider {
     private RSAPublicKey jwtPublicKey;
 
     private String introspectUri;
-    private List<AuthenticationProviderMatcher> matchers = new ArrayList<>();
+    private List<Map<String, String>> matchers;
 
     public String getProviderId() {
         return providerId;
@@ -68,9 +51,13 @@ public class OAuth2Provider {
         return introspectUri;
     }
 
-    public List<AuthenticationProviderMatcher> getMatchers() {
-        return Collections.unmodifiableList(this.matchers);
-    }
+    public List<MatcherDetails> getMatchers() {
+        return Optional.ofNullable(this.matchers)
+                .orElseGet(Collections::emptyList)
+                .stream()
+                .map(MatcherDetails::fromMap)
+                .collect(Collectors.toList());
+     }
 
     public void setProviderId(String providerId) {
         this.providerId = providerId;
@@ -105,13 +92,7 @@ public class OAuth2Provider {
     }
 
     public void setMatchers(List<Map<String, String>> matchers) {
-        this.matchers = matchers.stream()
-                .map(converter::convert)
-                .collect(Collectors.toList());
-    }
-
-    public void addMatcher(AuthenticationProviderMatcher matcher) {
-        this.matchers.add(matcher);
+        this.matchers = matchers;
     }
 
     public boolean isRelatedToOpaqueToken() {
@@ -120,6 +101,30 @@ public class OAuth2Provider {
 
     public boolean isRelatedToJwtToken() {
         return this.tokenType == TokenType.JWT;
+    }
+
+    public static class MatcherDetails {
+
+        public static MatcherDetails fromMap(Map<String, String> properties) {
+            return new MatcherDetails(properties);
+        }
+
+        private String type;
+        private Map<String, String> properties = new HashMap<>();
+
+        private MatcherDetails(Map<String, String> properties) {
+            this.type = properties.get("type");
+            this.properties.putAll(properties);
+        }
+
+        public String getType() {
+            return type;
+        }
+
+        public String getProperty(String key) {
+            return properties.get(key);
+        }
+
     }
 
 }
