@@ -1,0 +1,37 @@
+version: "3.0"
+services:
+  keycloak-1:
+    container_name: keycloak-1
+    image: quay.io/keycloak/keycloak:11.0.0
+    ports:
+      - "10001:8080"
+    volumes:
+      - ./keycloak/keycloak-config-1.json:/opt/jboss/keycloak/imports/realms-config.json
+    environment:
+      - KEYCLOAK_USER=admin
+      - KEYCLOAK_PASSWORD=admin
+      - KEYCLOAK_IMPORT=/opt/jboss/keycloak/imports/realms-config.json -Dkeycloak.profile.feature.upload_scripts=enabled
+  keycloak-2:
+    container_name: keycloak-2
+    image: quay.io/keycloak/keycloak:11.0.0
+    ports:
+      - "10002:8080"
+    volumes:
+      - ./keycloak/keycloak-config-2.json:/opt/jboss/keycloak/imports/realms-config.json
+    environment:
+      - KEYCLOAK_USER=admin
+      - KEYCLOAK_PASSWORD=admin
+      - KEYCLOAK_IMPORT=/opt/jboss/keycloak/imports/realms-config.json -Dkeycloak.profile.feature.upload_scripts=enabled
+  keycloak-3:
+    container_name: keycloak-3
+    image: quay.io/keycloak/keycloak:11.0.0
+    ports:
+      - "10003:8080"
+    volumes:
+      - ./keycloak/keycloak-config-3.json:/opt/jboss/keycloak/imports/realms-config.json
+    environment:
+      - KEYCLOAK_USER=admin
+      - KEYCLOAK_PASSWORD=admin
+      - KEYCLOAK_IMPORT=/opt/jboss/keycloak/imports/realms-config.json -Dkeycloak.profile.feature.upload_scripts=enabled
+networks:
+  default:
