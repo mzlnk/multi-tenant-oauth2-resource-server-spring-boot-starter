@@ -1,19 +1,22 @@
 package io.mzlnk.springframework.multitenant.oauth2.resourceserver.resolver;
 
-import io.mzlnk.springframework.multitenant.oauth2.resourceserver.resolver.jwt.JwtAuthenticationManagerResolver;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.AuthenticationManagerResolver;
-import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.oauth2.server.resource.authentication.OpaqueTokenAuthenticationProvider;
-import org.springframework.security.oauth2.server.resource.introspection.NimbusOpaqueTokenIntrospector;
+import com.nimbusds.jwt.JWTParser;
 import io.mzlnk.springframework.multitenant.oauth2.resourceserver.properties.AuthenticationProviderProperties;
+import io.mzlnk.springframework.multitenant.oauth2.resourceserver.properties.TokenType;
+import io.mzlnk.springframework.multitenant.oauth2.resourceserver.resolver.jwt.JwtAuthenticationManagerResolver;
 import io.mzlnk.springframework.multitenant.oauth2.resourceserver.tenant.AuthenticationTenant;
 import io.mzlnk.springframework.multitenant.oauth2.resourceserver.tenant.AuthenticationTenantFactory;
 import io.mzlnk.springframework.multitenant.oauth2.resourceserver.tenant.JwtAuthenticationTenant;
 import io.mzlnk.springframework.multitenant.oauth2.resourceserver.tenant.OpaqueAuthenticationTenant;
 import io.mzlnk.springframework.multitenant.oauth2.resourceserver.tenant.matcher.AuthenticationTenantMatcher;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationManagerResolver;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.AuthenticationServiceException;
+import org.springframework.security.oauth2.server.resource.authentication.OpaqueTokenAuthenticationProvider;
+import org.springframework.security.oauth2.server.resource.introspection.NimbusOpaqueTokenIntrospector;
+import org.springframework.security.oauth2.server.resource.web.BearerTokenResolver;
+import org.springframework.security.oauth2.server.resource.web.DefaultBearerTokenResolver;
 
 import javax.servlet.http.HttpServletRequest;
 import java.net.URL;
@@ -24,13 +27,13 @@ import java.util.stream.Collectors;
 
 public class MultitenantAuthenticationManagerResolver implements AuthenticationManagerResolver<HttpServletRequest> {
 
-    private final Log log = LogFactory.getLog(this.getClass());
-
     private final List<AuthenticationTenant> tenants;
     private final Map<String, AuthenticationTenant> tenantsByIssuer;
 
     private final Map<String, AuthenticationProvider> opaqueProviders;
     private final JwtAuthenticationManagerResolver jwtResolver;
+
+    private final BearerTokenResolver tokenResolver = new DefaultBearerTokenResolver();
 
     public MultitenantAuthenticationManagerResolver(AuthenticationProviderProperties tenantsProperties,
                                                     List<AuthenticationTenantMatcher> externalMatchers,
@@ -44,7 +47,9 @@ public class MultitenantAuthenticationManagerResolver implements AuthenticationM
 
     @Override
     public AuthenticationManager resolve(HttpServletRequest httpRequest) {
-        return request -> this.tenants.stream()
+        AuthenticationManager jwtResolver = request -> this.jwtResolver.resolve(httpRequest).authenticate(request);
+
+        AuthenticationManager opaqueResolver = request -> this.tenants.stream()
                 .filter(AuthenticationTenant::isRelatedToOpaqueToken)
                 .map(OpaqueAuthenticationTenant.class::cast)
                 .filter(p -> p.getMatchers().stream().anyMatch(matcher -> matcher.matches(httpRequest)))
@@ -52,11 +57,29 @@ public class MultitenantAuthenticationManagerResolver implements AuthenticationM
                 .map(AuthenticationTenant::getProviderId)
                 .map(this::getOpaqueProvider)
                 .map(p -> p.authenticate(request))
-                .orElseGet(() -> this.jwtResolver.resolve(httpRequest).authenticate(request));
+                .orElseThrow(() -> new AuthenticationServiceException("No authentication provider matches request"));
+
+        return switch (getTokenType(httpRequest)) {
+            case JWT -> jwtResolver;
+            case OPAQUE -> opaqueResolver;
+        };
     }
 
     public AuthenticationTenant getTenantByIssuer(URL issuer) {
         return this.tenantsByIssuer.get(issuer.toString());
+    }
+
+    private TokenType getTokenType(HttpServletRequest httpRequest) {
+        String token = this.tokenResolver.resolve(httpRequest);
+
+        try {
+            JWTParser.parse(token);
+
+            return TokenType.JWT;
+        } catch (Exception ignored) {
+        }
+
+        return TokenType.OPAQUE;
     }
 
     private AuthenticationProvider getOpaqueProvider(String providerId) {

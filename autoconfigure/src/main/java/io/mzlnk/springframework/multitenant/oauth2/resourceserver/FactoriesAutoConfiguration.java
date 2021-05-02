@@ -5,6 +5,7 @@ import io.mzlnk.springframework.multitenant.oauth2.resourceserver.tenant.JwtAuth
 import io.mzlnk.springframework.multitenant.oauth2.resourceserver.tenant.OpaqueAuthenticationTenant;
 import io.mzlnk.springframework.multitenant.oauth2.resourceserver.tenant.matcher.AuthenticationTenantMatcher;
 import io.mzlnk.springframework.multitenant.oauth2.resourceserver.tenant.matcher.CookieAuthenticationTenantMatcher;
+import io.mzlnk.springframework.multitenant.oauth2.resourceserver.tenant.matcher.DefaultAuthenticationTenantMatcher;
 import io.mzlnk.springframework.multitenant.oauth2.resourceserver.tenant.matcher.HeaderAuthenticationTenantMatcher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,6 +31,11 @@ public class FactoriesAutoConfiguration {
     @Bean
     public AuthenticationTenantMatcher.Factory headerAuthenticationTenantMatcherFactory() {
         return new HeaderAuthenticationTenantMatcher.Factory();
+    }
+
+    @Bean
+    public AuthenticationTenantMatcher.Factory defaultAuthenticationTenantMatcherFactory() {
+        return new DefaultAuthenticationTenantMatcher.Factory();
     }
 
 }
