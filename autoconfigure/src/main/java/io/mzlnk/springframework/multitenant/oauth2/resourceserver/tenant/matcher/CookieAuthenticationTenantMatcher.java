@@ -35,11 +35,11 @@ public class CookieAuthenticationTenantMatcher extends AbstractAuthenticationTen
 
         @Override
         public AuthenticationTenantMatcher create(String providerId, AuthenticationTenantDetails.MatcherDetails matcherDetails) {
-            var cookieName = matcherDetails.getProperty("cookieName");
-            var cookieValue = matcherDetails.getProperty("cookieValue");
+            var cookieName = matcherDetails.getProperty("cookie-name");
+            var cookieValue = matcherDetails.getProperty("cookie-value");
 
-            Assert.notNull(cookieName, "Property cookieName cannot be null");
-            Assert.notNull(cookieValue, "Property cookieValue cannot be null");
+            Assert.notNull(cookieName, "Property cookie-name cannot be null");
+            Assert.notNull(cookieValue, "Property cookie-value cannot be null");
 
             return new CookieAuthenticationTenantMatcher(providerId, cookieName, cookieValue);
         }

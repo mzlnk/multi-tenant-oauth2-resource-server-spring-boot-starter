@@ -5,30 +5,28 @@ oauth2:
   resource:
     server:
       tenants:
-        - provider-id: keycloak-auth-provider-1
+        - provider-id: uth-provider-1
           token-type: JWT
           issuer: "http://localhost:10001/auth/realms/auth-provider-1"
-          jwt-issuer-uri: "http://localhost:10001/auth/realms/auth-provider-1"
           jwt-public-key: "classpath:keys/keycloak-3.pub"
 
-        - providerId: keycloak-auth-provider-2
-          tokenType: JWT
+        - provider-id: auth-provider-2
+          token-type: JWT
           issuer: "http://localhost:10002/auth/realms/auth-provider-2"
-          jwtIssuerUri: "http://localhost:10002/auth/realms/auth-provider-2"
+          jwt-issuer-uri: "http://localhost:10002/auth/realms/auth-provider-2"
 
-        - providerId: keycloak-auth-provider-3
-          tokenType: OPAQUE
+        - provider-id: auth-provider-3
+          token-type: OPAQUE
           issuer: "http://localhost:10003/auth/realms/auth-provider-3"
-          clientId: oauth2-demo
-          clientSecret: 4f8cdf09-24a1-4837-9cf1-19917b3b20bb
-          introspectUri: "http://localhost:10003/auth/realms/auth-provider-3/protocol/openid-connect/token/introspect"
+          client-id: oauth2-demo
+          client-secret: 4f8cdf09-24a1-4837-9cf1-19917b3b20bb
+          introspect-uri: "http://localhost:10003/auth/realms/auth-provider-3/protocol/openid-connect/token/introspect"
           matchers:
             - type: COOKIE
-              cookieName: "issuer"
-              cookieValue: "k-3"
-            - type: COOKIE
-              cookieName: "lifetime"
-              cookieValue: "3000"
+              cookie-name: "issuer"
+              cookie-value: "auth-provider-3"
             - type: HEADER
-              headerName: "Host"
-              headerValue: "www.abc.com"
+              header-name: "Host"
+              header-value: "mzlnk.io"
+            - type: METHOD
+              method: POST

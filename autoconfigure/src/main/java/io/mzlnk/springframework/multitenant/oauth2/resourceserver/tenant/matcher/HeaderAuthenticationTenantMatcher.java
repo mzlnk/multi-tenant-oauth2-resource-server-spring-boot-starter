@@ -33,11 +33,11 @@ public class HeaderAuthenticationTenantMatcher extends AbstractAuthenticationTen
 
         @Override
         public AuthenticationTenantMatcher create(String providerId, AuthenticationTenantDetails.MatcherDetails matcherDetails) {
-            var headerName = matcherDetails.getProperty("headerName");
-            var headerValue = matcherDetails.getProperty("headerValue");
+            var headerName = matcherDetails.getProperty("header-name");
+            var headerValue = matcherDetails.getProperty("header-value");
 
-            Assert.notNull(headerName, "Property headerName cannot be null");
-            Assert.notNull(headerValue, "Property headerValue cannot be null");
+            Assert.notNull(headerName, "Property header-name cannot be null");
+            Assert.notNull(headerValue, "Property header-value cannot be null");
 
             return new HeaderAuthenticationTenantMatcher(providerId, headerName, headerValue);
         }

@@ -8,7 +8,7 @@ import io.mzlnk.springframework.multitenant.oauth2.resourceserver.resolver.Multi
 
 @EnableWebSecurity
 @RequiredArgsConstructor
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private final MultitenantAuthenticationManagerResolver resolver;
 
