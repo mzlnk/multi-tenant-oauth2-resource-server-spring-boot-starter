@@ -30,6 +30,8 @@ If you want to use the starter in your project - just include proper dependency 
 </dependency>
 ```
 
+#
+
 ### Configure Spring Security Configuration:
 
 To enable resolving bearer tokens from multiple tenants, you have to attach provided by starter `AuthenticationManagerResolver`. You can do it just by 
@@ -55,6 +57,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 }
 ```
+
+#
 
 ### Add tenants via application configuration
 
@@ -159,6 +163,7 @@ Because of the fact that resource server cannot retrieve issuer directly from op
 to determine which authentication tenant should be used to verify incoming opaque token. You can use built-in matchers or create a custom one. For more information
 continue reading :D
 
+#
 
 ### Matchers for Authentication Tenant
 
@@ -171,6 +176,7 @@ matchers.
 
 There are three built-in matchers provided by the starter:
 
+
 #### Default matcher
 
 If you want to use given tenant for all incoming opaque tokens (e.g. you have provided only one authentication tenant), you can use this default built-in matcher which simply matches all incoming request. Here is sample configuration:
@@ -179,6 +185,7 @@ matchers:
   - type: DEFAULT
 ```
 
+#
 
 #### Matcher against cookie
 
@@ -193,6 +200,8 @@ matchers:
 
 In above example given tenant will be used to verify token if incoming request will provide cookie with name `issuer` and its value equal to `auth-provider-1`.
 
+#
+
 #### Matcher against header:
 
 This matcher can be added via configuration file under `matchers` property. You have to provide header name and the value which incoming request have to provide 
@@ -206,6 +215,7 @@ matchers:
 
 In above example given tenant will be used to verify token if incoming request will provide `Host` header and its value equal to `mzlnk.io`.
 
+#
 
 #### Custom matchers:
 
@@ -230,6 +240,8 @@ public class AuthProvider3Matcher implements AuthenticationTenantMatcher {
 
 In example above, we are creating matcher for authentication tenant defined in configuration file with `provider-id` equal to `auth-provider-3`.
 
+#
+
 #### Custom matcher factory:
 
 What's more you can create custom matchers which can be used for multiple tenants similarly to the built-in ones. To achieve it, you have to create a class
@@ -250,7 +262,8 @@ public class HttpMethodMatcherFactory implements AuthenticationTenantMatcher.Fac
     }
 
     @Override
-    public AuthenticationTenantMatcher create(String providerId, AuthenticationTenantDetails.MatcherDetails matcherDetails) {
+    public AuthenticationTenantMatcher create(String providerId, 
+                                              AuthenticationTenantDetails.MatcherDetails matcherDetails) {
         return new HttpMethodMatcher(providerId, matcherDetails.getProperty(METHOD_PROPERTY_KEY));
     }
 
