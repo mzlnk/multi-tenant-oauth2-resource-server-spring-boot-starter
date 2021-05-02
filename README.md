@@ -31,6 +31,8 @@ If you want to use the starter in your project - just include proper dependency 
 </dependency>
 ```
 
+🚧 The jar file is not available on Maven Central Repository yet - it will be added in 1-2 days (just formal requirements left)
+
 #
 
 ### Configure Spring Security Configuration:
