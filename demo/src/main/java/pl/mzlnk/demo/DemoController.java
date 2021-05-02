@@ -1,10 +1,12 @@
 package pl.mzlnk.demo;
 
-import org.springframework.boot.web.servlet.server.Session;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.server.resource.introspection.OAuth2IntrospectionAuthenticatedPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import pl.mzlnk.autoconfigure.oauth2.server.resource.context.AuthenticationTenantContextHolder;
+import pl.mzlnk.autoconfigure.oauth2.server.resource.tenant.AuthenticationTenant;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -23,7 +25,16 @@ public class DemoController {
 
     @GetMapping("/authorized/me")
     public String me(Principal principal) {
-        return "User: " + principal.getName();
+        var opaquePrincipal = (OAuth2IntrospectionAuthenticatedPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        var iss = opaquePrincipal.getAttributes().get("iss");
+
+        return "User: " + principal.getName() + ", issuer: " + iss;
+    }
+
+    @GetMapping("/authorized/tenant")
+    public AuthenticationTenant getTenant() {
+        var tenant = AuthenticationTenantContextHolder.getContext().getAuthenticationTenant();
+        return tenant;
     }
 
     @GetMapping("/non-authorized")

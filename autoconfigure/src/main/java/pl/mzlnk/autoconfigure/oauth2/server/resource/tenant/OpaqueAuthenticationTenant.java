@@ -1,6 +1,5 @@
 package pl.mzlnk.autoconfigure.oauth2.server.resource.tenant;
 
-import org.springframework.stereotype.Component;
 import pl.mzlnk.autoconfigure.oauth2.server.resource.properties.AuthenticationTenantDetails;
 import pl.mzlnk.autoconfigure.oauth2.server.resource.tenant.matcher.AuthenticationTenantMatcher;
 import pl.mzlnk.autoconfigure.oauth2.server.resource.properties.TokenType;
@@ -17,11 +16,12 @@ public class OpaqueAuthenticationTenant extends AuthenticationTenant {
 
     public OpaqueAuthenticationTenant(String providerId,
                                       TokenType tokenType,
+                                      String issuer,
                                       List<AuthenticationTenantMatcher> matchers,
                                       String clientId,
                                       String clientSecret,
                                       String introspectUri) {
-        super(providerId, tokenType, matchers);
+        super(providerId, tokenType, issuer, matchers);
         this.clientId = clientId;
         this.clientSecret = clientSecret;
         this.introspectUri = introspectUri;
@@ -51,6 +51,7 @@ public class OpaqueAuthenticationTenant extends AuthenticationTenant {
             return new OpaqueAuthenticationTenant(
                     tenant.getProviderId(),
                     tenant.getTokenType(),
+                    tenant.getIssuer(),
                     tenant.getMatchers().stream().map(matcherFactory::fromMatcherDetails).collect(Collectors.toList()),
                     tenant.getClientId(),
                     tenant.getClientSecret(),

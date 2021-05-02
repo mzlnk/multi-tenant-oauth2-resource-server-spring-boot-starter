@@ -12,7 +12,7 @@ public class AuthenticationTenantDetails {
     private String clientId;
     private String clientSecret;
 
-    private String jwtIssuer;
+    private String issuer;
     private String jwtIssuerUri;
     private RSAPublicKey jwtPublicKey;
 
@@ -35,8 +35,8 @@ public class AuthenticationTenantDetails {
         return clientSecret;
     }
 
-    public String getJwtIssuer() {
-        return jwtIssuer;
+    public String getIssuer() {
+        return issuer;
     }
 
     public String getJwtIssuerUri() {
@@ -75,8 +75,8 @@ public class AuthenticationTenantDetails {
         this.clientSecret = clientSecret;
     }
 
-    public void setJwtIssuer(String jwtIssuer) {
-        this.jwtIssuer = jwtIssuer;
+    public void setIssuer(String issuer) {
+        this.issuer = issuer;
     }
 
     public void setJwtIssuerUri(String jwtIssuerUri) {

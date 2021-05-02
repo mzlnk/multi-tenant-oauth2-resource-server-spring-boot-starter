@@ -7,16 +7,18 @@ oauth2:
       tenants:
         - provider-id: keycloak-auth-provider-1
           token-type: JWT
-          jwt-issuer: "http://localhost:10001/auth/realms/auth-provider-1"
+          issuer: "http://localhost:10001/auth/realms/auth-provider-1"
           jwt-issuer-uri: "http://localhost:10001/auth/realms/auth-provider-1"
           jwt-public-key: "classpath:keys/keycloak-3.pub"
 
         - providerId: keycloak-auth-provider-2
           tokenType: JWT
+          issuer: "http://localhost:10002/auth/realms/auth-provider-2"
           jwtIssuerUri: "http://localhost:10002/auth/realms/auth-provider-2"
 
         - providerId: keycloak-auth-provider-3
           tokenType: OPAQUE
+          issuer: "http://localhost:10003/auth/realms/auth-provider-3"
           clientId: oauth2-demo
           clientSecret: 4f8cdf09-24a1-4837-9cf1-19917b3b20bb
           introspectUri: "http://localhost:10003/auth/realms/auth-provider-3/protocol/openid-connect/token/introspect"

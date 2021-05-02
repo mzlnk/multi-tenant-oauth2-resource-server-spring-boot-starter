@@ -16,6 +16,8 @@ import pl.mzlnk.autoconfigure.oauth2.server.resource.tenant.OpaqueAuthentication
 import pl.mzlnk.autoconfigure.oauth2.server.resource.tenant.matcher.AuthenticationTenantMatcher;
 
 import javax.servlet.http.HttpServletRequest;
+import java.net.URI;
+import java.net.URL;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -26,6 +28,8 @@ public class MultitenantAuthenticationManagerResolver implements AuthenticationM
     private final Log log = LogFactory.getLog(this.getClass());
 
     private final List<AuthenticationTenant> tenants;
+    private final Map<String, AuthenticationTenant> tenantsByIssuer;
+
     private final Map<String, AuthenticationProvider> opaqueProviders;
     private final JwtAuthenticationManagerResolver jwtResolver;
 
@@ -34,6 +38,7 @@ public class MultitenantAuthenticationManagerResolver implements AuthenticationM
                                                     AuthenticationTenantFactory tenantFactory) {
 
         this.tenants = tenantFactory.create(tenantsProperties.getTenants(), externalMatchers);
+        this.tenantsByIssuer = this.tenants.stream().collect(Collectors.toMap(AuthenticationTenant::getIssuer, a -> a));
         this.opaqueProviders = opaqueTokenAuthenticationProviders();
         this.jwtResolver = jwtResolver();
     }
@@ -48,6 +53,10 @@ public class MultitenantAuthenticationManagerResolver implements AuthenticationM
                 .map(this::getOpaqueProvider)
                 .map(p -> p.authenticate(request))
                 .orElseGet(() -> this.jwtResolver.resolve(httpRequest).authenticate(request));
+    }
+
+    public AuthenticationTenant getTenantByIssuer(URL issuer) {
+        return this.tenantsByIssuer.get(issuer.toString());
     }
 
     private AuthenticationProvider getOpaqueProvider(String providerId) {
@@ -80,9 +89,9 @@ public class MultitenantAuthenticationManagerResolver implements AuthenticationM
                 .collect(Collectors.toList());
 
         var publicKeys = jwtTenants.stream()
-                .filter(p -> p.getJwtIssuer() != null)
+                .filter(p -> p.getIssuer() != null)
                 .filter(p -> p.getJwtPublicKey() != null)
-                .collect(Collectors.toMap(JwtAuthenticationTenant::getJwtIssuer, JwtAuthenticationTenant::getJwtPublicKey));
+                .collect(Collectors.toMap(JwtAuthenticationTenant::getIssuer, JwtAuthenticationTenant::getJwtPublicKey));
 
         var trustedIssuers = jwtTenants.stream()
                 .map(JwtAuthenticationTenant::getJwtIssuerUri)

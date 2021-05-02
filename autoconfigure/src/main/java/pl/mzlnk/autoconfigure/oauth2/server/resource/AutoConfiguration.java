@@ -3,6 +3,9 @@ package pl.mzlnk.autoconfigure.oauth2.server.resource;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
+import pl.mzlnk.autoconfigure.oauth2.server.resource.context.AuthenticationTenantContextFilter;
+import pl.mzlnk.autoconfigure.oauth2.server.resource.context.AuthenticationTenantContextHolder;
 import pl.mzlnk.autoconfigure.oauth2.server.resource.properties.AuthenticationProviderProperties;
 import pl.mzlnk.autoconfigure.oauth2.server.resource.resolver.MultitenantAuthenticationManagerResolver;
 import pl.mzlnk.autoconfigure.oauth2.server.resource.tenant.AuthenticationTenant;
@@ -37,6 +40,12 @@ public class AutoConfiguration {
                                                                                              List<AuthenticationTenantMatcher> matchers,
                                                                                              AuthenticationTenantFactory tenantFactory) {
         return new MultitenantAuthenticationManagerResolver(properties, matchers, tenantFactory);
+    }
+
+    @Bean
+    @Order(1)
+    public AuthenticationTenantContextFilter authenticationTenantContextFilter(MultitenantAuthenticationManagerResolver resolver) {
+        return new AuthenticationTenantContextFilter(resolver);
     }
 
 }
