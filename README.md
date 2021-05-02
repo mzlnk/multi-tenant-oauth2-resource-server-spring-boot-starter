@@ -1,7 +1,7 @@
 # Multi-Tenant OAuth2 Resource Server Spring Boot Starter
 
 [![Licence: MIT](https://img.shields.io/badge/Licence-MIT-blue.svg)](https://shields.io/)
-[![Version: 1.0](https://img.shields.io/badge/version-1.0-brightgreen.svg)](https://shields.io/)
+[![Version: BETA-1.0](https://img.shields.io/badge/version-1.0--beta-yellow.svg)](https://shields.io/)
 [![Open Source](https://badges.frapsoft.com/os/v2/open-source.svg?v=103)](https://github.com/ellerbrock/open-source-badges/)
 [![Java : 15](https://img.shields.io/badge/Java-15-orange.svg)](https://jdk.java.net/15/)
 
@@ -10,6 +10,12 @@
 Have you tried to secure you Spring Boot application with OAuth2 but I haven't found any clear and quick solution for it? If so, this starter is for you!
 The Multi-Tenant OAuth2 Resource Server is a Spring Boot starter created to configure multiple authorization tenants out of the box - just by adding them
 in Spring Boot configuration file ;)
+
+
+## Releases
+
+🚧 The project is currently in BETA. There can be lack of some features or some bugs may still appear. However, we do our best to continuously improve
+and develop the starter ;)
 
 ## Getting started!
 
@@ -164,6 +170,14 @@ matchers.
 #### Built-in matchers:
 
 There are three built-in matchers provided by the starter:
+
+#### Default matcher
+
+If you want to use given tenant for all incoming opaque tokens (e.g. you have provided only one authentication tenant), you can use this default built-in matcher which simply matches all incoming request. Here is sample configuration:
+```yaml
+matchers:
+  - type: DEFAULT
+```
 
 
 #### Matcher against cookie
