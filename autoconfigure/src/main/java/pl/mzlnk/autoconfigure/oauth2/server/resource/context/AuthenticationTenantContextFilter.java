@@ -3,18 +3,18 @@ package pl.mzlnk.autoconfigure.oauth2.server.resource.context;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.introspection.OAuth2IntrospectionAuthenticatedPrincipal;
-import org.springframework.web.filter.GenericFilterBean;
+import org.springframework.web.filter.OncePerRequestFilter;
 import pl.mzlnk.autoconfigure.oauth2.server.resource.resolver.MultitenantAuthenticationManagerResolver;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
 
-public class AuthenticationTenantContextFilter extends GenericFilterBean {
+public class AuthenticationTenantContextFilter extends OncePerRequestFilter {
 
     private final MultitenantAuthenticationManagerResolver resolver;
 
@@ -23,9 +23,9 @@ public class AuthenticationTenantContextFilter extends GenericFilterBean {
     }
 
     @Override
-    public void doFilter(ServletRequest servletRequest,
-                         ServletResponse servletResponse,
-                         FilterChain filterChain) throws IOException, ServletException {
+    public void doFilterInternal(HttpServletRequest httpRequest,
+                                 HttpServletResponse httpResponse,
+                                 FilterChain filterChain) throws IOException, ServletException {
 
         Optional.ofNullable(this.retrieveIssuer(SecurityContextHolder.getContext().getAuthentication().getPrincipal()))
                 .map(this.resolver::getTenantByIssuer)
@@ -35,7 +35,12 @@ public class AuthenticationTenantContextFilter extends GenericFilterBean {
                     AuthenticationTenantContextHolder.setContext(context);
                 });
 
-        filterChain.doFilter(servletRequest, servletResponse);
+        try {
+            filterChain.doFilter(httpRequest, httpResponse);
+        } finally {
+            AuthenticationTenantContextHolder.clearContext();
+        }
+
     }
 
     @Override
