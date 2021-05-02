@@ -7,6 +7,7 @@ import java.io.Serializable;
 public interface AuthenticationTenantContext extends Serializable {
 
     AuthenticationTenant getAuthenticationTenant();
+
     void setAuthenticationTenant(AuthenticationTenant tenant);
 
 }

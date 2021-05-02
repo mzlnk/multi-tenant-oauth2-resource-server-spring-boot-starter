@@ -13,15 +13,15 @@ import java.util.Map;
 
 public class JwtAuthenticationManagerResolver implements AuthenticationManagerResolver<HttpServletRequest> {
 
-    public static Builder builder() {
-        return new Builder();
-    }
-
     private final List<AuthenticationManagerResolver<HttpServletRequest>> resolvers;
 
     @SafeVarargs
     private JwtAuthenticationManagerResolver(AuthenticationManagerResolver<HttpServletRequest>... resolvers) {
         this.resolvers = List.of(resolvers);
+    }
+
+    public static Builder builder() {
+        return new Builder();
     }
 
     @Override

@@ -16,7 +16,6 @@ import pl.mzlnk.autoconfigure.oauth2.server.resource.tenant.OpaqueAuthentication
 import pl.mzlnk.autoconfigure.oauth2.server.resource.tenant.matcher.AuthenticationTenantMatcher;
 
 import javax.servlet.http.HttpServletRequest;
-import java.net.URI;
 import java.net.URL;
 import java.util.List;
 import java.util.Map;

@@ -1,8 +1,8 @@
 package pl.mzlnk.autoconfigure.oauth2.server.resource.tenant;
 
 import pl.mzlnk.autoconfigure.oauth2.server.resource.properties.AuthenticationTenantDetails;
-import pl.mzlnk.autoconfigure.oauth2.server.resource.tenant.matcher.AuthenticationTenantMatcher;
 import pl.mzlnk.autoconfigure.oauth2.server.resource.properties.TokenType;
+import pl.mzlnk.autoconfigure.oauth2.server.resource.tenant.matcher.AuthenticationTenantMatcher;
 import pl.mzlnk.autoconfigure.oauth2.server.resource.tenant.matcher.AuthenticationTenantMatcherFactory;
 
 import java.util.List;

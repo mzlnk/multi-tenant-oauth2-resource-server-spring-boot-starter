@@ -23,32 +23,64 @@ public class AuthenticationTenantDetails {
         return providerId;
     }
 
+    public void setProviderId(String providerId) {
+        this.providerId = providerId;
+    }
+
     public TokenType getTokenType() {
         return tokenType;
+    }
+
+    public void setTokenType(TokenType tokenType) {
+        this.tokenType = tokenType;
     }
 
     public String getClientId() {
         return clientId;
     }
 
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
+    }
+
     public String getClientSecret() {
         return clientSecret;
+    }
+
+    public void setClientSecret(String clientSecret) {
+        this.clientSecret = clientSecret;
     }
 
     public String getIssuer() {
         return issuer;
     }
 
+    public void setIssuer(String issuer) {
+        this.issuer = issuer;
+    }
+
     public String getJwtIssuerUri() {
         return jwtIssuerUri;
+    }
+
+    public void setJwtIssuerUri(String jwtIssuerUri) {
+        this.jwtIssuerUri = jwtIssuerUri;
     }
 
     public RSAPublicKey getJwtPublicKey() {
         return jwtPublicKey;
     }
 
+    public void setJwtPublicKey(RSAPublicKey jwtPublicKey) {
+        this.jwtPublicKey = jwtPublicKey;
+    }
+
     public String getIntrospectUri() {
         return introspectUri;
+    }
+
+    public void setIntrospectUri(String introspectUri) {
+        this.introspectUri = introspectUri;
     }
 
     public List<MatcherDetails> getMatchers() {
@@ -57,38 +89,6 @@ public class AuthenticationTenantDetails {
                 .stream()
                 .map(MatcherDetails::fromMap)
                 .collect(Collectors.toList());
-     }
-
-    public void setProviderId(String providerId) {
-        this.providerId = providerId;
-    }
-
-    public void setTokenType(TokenType tokenType) {
-        this.tokenType = tokenType;
-    }
-
-    public void setClientId(String clientId) {
-        this.clientId = clientId;
-    }
-
-    public void setClientSecret(String clientSecret) {
-        this.clientSecret = clientSecret;
-    }
-
-    public void setIssuer(String issuer) {
-        this.issuer = issuer;
-    }
-
-    public void setJwtIssuerUri(String jwtIssuerUri) {
-        this.jwtIssuerUri = jwtIssuerUri;
-    }
-
-    public void setJwtPublicKey(RSAPublicKey jwtPublicKey) {
-        this.jwtPublicKey = jwtPublicKey;
-    }
-
-    public void setIntrospectUri(String introspectUri) {
-        this.introspectUri = introspectUri;
     }
 
     public void setMatchers(List<Map<String, String>> matchers) {
@@ -105,16 +105,16 @@ public class AuthenticationTenantDetails {
 
     public static class MatcherDetails {
 
-        public static MatcherDetails fromMap(Map<String, String> properties) {
-            return new MatcherDetails(properties);
-        }
-
         private String type;
         private Map<String, String> properties = new HashMap<>();
 
         private MatcherDetails(Map<String, String> properties) {
             this.type = properties.get("type");
             this.properties.putAll(properties);
+        }
+
+        public static MatcherDetails fromMap(Map<String, String> properties) {
+            return new MatcherDetails(properties);
         }
 
         public String getType() {

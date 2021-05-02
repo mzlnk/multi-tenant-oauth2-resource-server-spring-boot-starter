@@ -1,12 +1,10 @@
 package pl.mzlnk.autoconfigure.oauth2.server.resource.tenant.matcher;
 
 import org.springframework.util.Assert;
-import pl.mzlnk.autoconfigure.oauth2.server.resource.api.MatcherFactory;
 import pl.mzlnk.autoconfigure.oauth2.server.resource.properties.AuthenticationTenantDetails;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
-import java.util.Map;
 import java.util.stream.Stream;
 
 public class CookieAuthenticationTenantMatcher extends AbstractAuthenticationTenantMatcher {
@@ -34,6 +32,7 @@ public class CookieAuthenticationTenantMatcher extends AbstractAuthenticationTen
         public String getType() {
             return "COOKIE";
         }
+
         @Override
         public AuthenticationTenantMatcher create(String providerId, AuthenticationTenantDetails.MatcherDetails matcherDetails) {
             var cookieName = matcherDetails.getProperty("cookieName");

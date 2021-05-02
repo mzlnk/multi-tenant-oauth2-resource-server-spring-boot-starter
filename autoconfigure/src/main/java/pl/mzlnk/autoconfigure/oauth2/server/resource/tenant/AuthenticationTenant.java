@@ -2,8 +2,8 @@ package pl.mzlnk.autoconfigure.oauth2.server.resource.tenant;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import pl.mzlnk.autoconfigure.oauth2.server.resource.properties.AuthenticationTenantDetails;
-import pl.mzlnk.autoconfigure.oauth2.server.resource.tenant.matcher.AuthenticationTenantMatcher;
 import pl.mzlnk.autoconfigure.oauth2.server.resource.properties.TokenType;
+import pl.mzlnk.autoconfigure.oauth2.server.resource.tenant.matcher.AuthenticationTenantMatcher;
 import pl.mzlnk.autoconfigure.oauth2.server.resource.tenant.matcher.AuthenticationTenantMatcherFactory;
 
 import java.util.Collections;
@@ -58,9 +58,11 @@ public abstract class AuthenticationTenant {
         return this.tokenType == TokenType.JWT;
     }
 
+
     public interface Factory {
 
         TokenType getType();
+
         AuthenticationTenant fromDetails(AuthenticationTenantDetails tenant, AuthenticationTenantMatcherFactory matcherFactory);
 
     }

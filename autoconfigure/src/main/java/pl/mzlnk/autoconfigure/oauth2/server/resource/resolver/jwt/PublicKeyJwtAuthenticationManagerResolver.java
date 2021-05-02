@@ -27,7 +27,7 @@ public class PublicKeyJwtAuthenticationManagerResolver implements Authentication
 
     @Override
     public AuthenticationManager resolve(String issuer) {
-        if(!this.authenticationManagers.containsKey(issuer)) {
+        if (!this.authenticationManagers.containsKey(issuer)) {
             this.logger.debug("Did not resolve AuthenticationManager since public key had not been provided for this issuer");
             return null;
         }

@@ -24,7 +24,7 @@ public class ThreadLocalAuthenticationTenantContextHolderStrategy implements Aut
     public AuthenticationTenantContext getContext() {
         AuthenticationTenantContext context = contextHolder.get();
 
-        if(context == null) {
+        if (context == null) {
             context = this.createEmptyContext();
             contextHolder.set(context);
         }

@@ -1,6 +1,5 @@
 package pl.mzlnk.autoconfigure.oauth2.server.resource.api;
 
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.annotation.AliasFor;
 import org.springframework.stereotype.Component;
 
