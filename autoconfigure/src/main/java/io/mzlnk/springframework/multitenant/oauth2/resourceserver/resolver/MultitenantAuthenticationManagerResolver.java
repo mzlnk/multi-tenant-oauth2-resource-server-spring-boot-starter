@@ -46,6 +46,7 @@ public class MultitenantAuthenticationManagerResolver implements AuthenticationM
     public AuthenticationManager resolve(HttpServletRequest httpRequest) {
         return request -> this.tenants.stream()
                 .filter(AuthenticationTenant::isRelatedToOpaqueToken)
+                .map(OpaqueAuthenticationTenant.class::cast)
                 .filter(p -> p.getMatchers().stream().anyMatch(matcher -> matcher.matches(httpRequest)))
                 .findAny()
                 .map(AuthenticationTenant::getProviderId)

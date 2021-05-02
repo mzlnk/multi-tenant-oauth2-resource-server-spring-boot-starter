@@ -1,10 +1,12 @@
 package io.mzlnk.springframework.multitenant.oauth2.resourceserver.tenant;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.mzlnk.springframework.multitenant.oauth2.resourceserver.properties.AuthenticationTenantDetails;
 import io.mzlnk.springframework.multitenant.oauth2.resourceserver.properties.TokenType;
 import io.mzlnk.springframework.multitenant.oauth2.resourceserver.tenant.matcher.AuthenticationTenantMatcher;
 import io.mzlnk.springframework.multitenant.oauth2.resourceserver.tenant.matcher.AuthenticationTenantMatcherFactory;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -13,6 +15,7 @@ public class OpaqueAuthenticationTenant extends AuthenticationTenant {
     private final String clientId;
     private final String clientSecret;
     private final String introspectUri;
+    private final List<AuthenticationTenantMatcher> matchers;
 
     public OpaqueAuthenticationTenant(String providerId,
                                       TokenType tokenType,
@@ -21,7 +24,8 @@ public class OpaqueAuthenticationTenant extends AuthenticationTenant {
                                       String clientId,
                                       String clientSecret,
                                       String introspectUri) {
-        super(providerId, tokenType, issuer, matchers);
+        super(providerId, tokenType, issuer);
+        this.matchers = matchers;
         this.clientId = clientId;
         this.clientSecret = clientSecret;
         this.introspectUri = introspectUri;
@@ -37,6 +41,19 @@ public class OpaqueAuthenticationTenant extends AuthenticationTenant {
 
     public String getIntrospectUri() {
         return introspectUri;
+    }
+
+    @JsonIgnore
+    public List<AuthenticationTenantMatcher> getMatchers() {
+        return Collections.unmodifiableList(matchers);
+    }
+
+    public void addMatcher(AuthenticationTenantMatcher matcher) {
+        this.matchers.add(matcher);
+    }
+
+    public void addMatchers(List<AuthenticationTenantMatcher> matchers) {
+        this.matchers.addAll(matchers);
     }
 
     public static class Factory implements AuthenticationTenant.Factory {

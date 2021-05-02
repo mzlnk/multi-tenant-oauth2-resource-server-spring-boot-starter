@@ -18,11 +18,10 @@ public class JwtAuthenticationTenant extends AuthenticationTenant {
     public JwtAuthenticationTenant(String providerId,
                                    TokenType tokenType,
                                    String issuer,
-                                   List<AuthenticationTenantMatcher> matchers,
                                    String jwtIssuerUri,
                                    RSAPublicKey jwtPublicKey) {
 
-        super(providerId, tokenType, issuer, matchers);
+        super(providerId, tokenType, issuer);
         this.jwtIssuerUri = jwtIssuerUri;
         this.jwtPublicKey = jwtPublicKey;
     }
@@ -49,7 +48,6 @@ public class JwtAuthenticationTenant extends AuthenticationTenant {
                     tenant.getProviderId(),
                     tenant.getTokenType(),
                     tenant.getIssuer(),
-                    tenant.getMatchers().stream().map(matcherFactory::fromMatcherDetails).collect(Collectors.toList()),
                     tenant.getJwtIssuerUri(),
                     tenant.getJwtPublicKey()
             );

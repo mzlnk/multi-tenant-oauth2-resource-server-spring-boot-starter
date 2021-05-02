@@ -24,14 +24,20 @@ public class AuthenticationTenantFactory {
                 .collect(Collectors.toMap(AuthenticationTenant.Factory::getType, f -> f));
     }
 
-    public List<AuthenticationTenant> create(List<AuthenticationTenantDetails> tenants, List<AuthenticationTenantMatcher> externalMatchers) {
+    public List<AuthenticationTenant> create(List<AuthenticationTenantDetails> tenantsDetails, List<AuthenticationTenantMatcher> externalMatchers) {
         var externalMatchersByProvider = externalMatchers.stream()
                 .collect(groupingBy(AuthenticationTenantMatcher::getProviderId));
 
-        return tenants.stream()
+        var tenants = tenantsDetails.stream()
                 .map(this::create)
-                .peek(tenant -> tenant.addMatchers(externalMatchersByProvider.getOrDefault(tenant.getProviderId(), Collections.emptyList())))
                 .collect(Collectors.toList());
+
+        tenants.stream()
+                .filter(AuthenticationTenant::isRelatedToOpaqueToken)
+                .map(OpaqueAuthenticationTenant.class::cast)
+                .forEach(tenant -> tenant.addMatchers(externalMatchersByProvider.getOrDefault(tenant.getProviderId(), Collections.emptyList())));
+
+        return tenants;
     }
 
     public AuthenticationTenant create(AuthenticationTenantDetails tenant) {
