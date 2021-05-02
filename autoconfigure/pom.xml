@@ -4,11 +4,36 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>io.mzlnk</groupId>
+    <groupId>io.mzlnk.springframework</groupId>
     <artifactId>multi-tenant-oauth2-resource-server-spring-boot-autoconfigure</artifactId>
     <version>1.0</version>
 
     <name>multi-tenant-oauth2-resource-server-spring-boot-autoconfiguration</name>
+    <description>Spring Boot autoconfiguration for multi-tenant OAuth2 resource server</description>
+    <url>https://github.com/mzlnk/spring-boot-multi-tenant-oauth2-resource-server</url>
+
+    <inceptionYear>2021</inceptionYear>
+
+    <licenses>
+        <license>
+            <name>The MIT License</name>
+            <url>https://opensource.org/licenses/MIT</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <id>mzlnk</id>
+            <name>Marcin Zielonka</name>
+            <email>zielonka.marcin@protonmail.com</email>
+            <url>mzlnk.io</url>
+            <roles>
+                <role>developer</role>
+            </roles>
+            <timezone>Europe/Warsaw</timezone>
+        </developer>
+    </developers>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -16,6 +41,13 @@
 
         <maven.compiler.source>15</maven.compiler.source>
         <maven.compiler.target>15</maven.compiler.target>
+
+        <spring-security-oauth2-resource-server.version>5.4.6</spring-security-oauth2-resource-server.version>
+        <oauth2-oidc-sdk.version>6.23</oauth2-oidc-sdk.version>
+        <servlet-api.version>2.5</servlet-api.version>
+        <spring-webmvc.version>5.3.6</spring-webmvc.version>
+        <jackson-databind.version>2.12.3</jackson-databind.version>
+        <spring-boot-dependencies.version>2.4.5</spring-boot-dependencies.version>
     </properties>
 
     <dependencies>
@@ -31,7 +63,7 @@
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-oauth2-resource-server</artifactId>
-            <version>5.4.6</version>
+            <version>${spring-security-oauth2-resource-server.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
@@ -41,32 +73,32 @@
         <dependency>
             <groupId>com.nimbusds</groupId>
             <artifactId>oauth2-oidc-sdk</artifactId>
-            <version>6.23</version>
+            <version>${oauth2-oidc-sdk.version}</version>
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>servlet-api</artifactId>
-            <version>2.5</version>
+            <version>${servlet-api.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
-            <version>5.3.6</version>
+            <version>${spring-webmvc.version}</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.12.3</version>
+            <version>${jackson-databind.version}</version>
         </dependency>
     </dependencies>
 
     <dependencyManagement>
-        <dependencies> <!-- The parent should provide all that -->
+        <dependencies>
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
-                <version>2.4.5</version>
+                <version>${spring-boot-dependencies.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>

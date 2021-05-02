@@ -4,9 +4,36 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>pl.mzlnk</groupId>
+    <groupId>io.mzlnk.springframework</groupId>
     <artifactId>multi-tenant-oauth2-resource-server-spring-boot-starter</artifactId>
     <version>1.0</version>
+
+    <name>multi-tenant-oauth2-resource-server-spring-boot-starter</name>
+    <description>Spring Boot starter for multi-tenant OAuth2 resource server</description>
+    <url>https://github.com/mzlnk/spring-boot-multi-tenant-oauth2-resource-server</url>
+
+    <inceptionYear>2021</inceptionYear>
+
+    <licenses>
+        <license>
+            <name>The MIT License</name>
+            <url>https://opensource.org/licenses/MIT</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <id>mzlnk</id>
+            <name>Marcin Zielonka</name>
+            <email>zielonka.marcin@protonmail.com</email>
+            <url>mzlnk.io</url>
+            <roles>
+                <role>developer</role>
+            </roles>
+            <timezone>Europe/Warsaw</timezone>
+        </developer>
+    </developers>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -18,6 +45,9 @@
     <properties>
         <maven.compiler.source>15</maven.compiler.source>
         <maven.compiler.target>15</maven.compiler.target>
+
+        <oauth2-oidc-sdk.version>6.23</oauth2-oidc-sdk.version>
+        <multi-tenant-oauth2-resource-server-spring-boot-autoconfigure.version>1.0</multi-tenant-oauth2-resource-server-spring-boot-autoconfigure.version>
     </properties>
 
     <dependencies>
@@ -32,16 +62,16 @@
         <dependency>
             <groupId>com.nimbusds</groupId>
             <artifactId>oauth2-oidc-sdk</artifactId>
-            <version>6.23</version>
+            <version>${oauth2-oidc-sdk.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <dependency>
-            <groupId>pl.mzlnk</groupId>
+            <groupId>io.mzlnk.springframework</groupId>
             <artifactId>multi-tenant-oauth2-resource-server-spring-boot-autoconfigure</artifactId>
-            <version>1.0</version>
+            <version>${multi-tenant-oauth2-resource-server-spring-boot-autoconfigure.version}</version>
         </dependency>
     </dependencies>
 
