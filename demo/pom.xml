@@ -16,7 +16,7 @@
 
     <name>multi-tenant-oauth2-resource-server-spring-boot-starter-demo</name>
     <description>Sample demo for multi-tenant OAuth2 resource server Spring Boot starter</description>
-    <url>https://github.com/mzlnk/spring-boot-multi-tenant-oauth2-resource-server</url>
+    <url>https://github.com/mzlnk/multi-tenant-oauth2-resource-server-spring-boot-starter</url>
 
     <inceptionYear>2021</inceptionYear>
 
