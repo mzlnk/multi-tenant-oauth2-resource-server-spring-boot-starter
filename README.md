@@ -2,8 +2,9 @@
 
 [![Licence: MIT](https://img.shields.io/badge/Licence-MIT-blue.svg)](https://shields.io/)
 [![Version: BETA-1.0](https://img.shields.io/badge/version-1.0--beta-yellow.svg)](https://shields.io/)
-[![Open Source](https://badges.frapsoft.com/os/v2/open-source.svg?v=103)](https://github.com/ellerbrock/open-source-badges/)
 [![Java : 15](https://img.shields.io/badge/Java-15-orange.svg)](https://jdk.java.net/15/)
+[![Open Source](https://badges.frapsoft.com/os/v2/open-source.svg?v=103)](https://github.com/ellerbrock/open-source-badges/)
+
 
 ## About
 
@@ -29,6 +30,8 @@ If you want to use the starter in your project - just include proper dependency 
   <version>1.0</version>
 </dependency>
 ```
+
+🚧 The jar file is not available on Maven Central Repository yet - it will be added in 1-2 days (just formal requirements left)
 
 #
 
@@ -299,6 +302,17 @@ public class HttpMethodMatcherFactory implements AuthenticationTenantMatcher.Fac
   matchers:
     - type: METHOD
       method: GET
+```
+
+#
+
+### Obtain tenant during handling request
+
+If you want to obtain the authentication tenant which the token had been validated against, you can get it via `AuthenticationTenantContextHolder` which is
+responsible for storing current authentication tenant in a context similarly to `SecurityContextHolder`.
+
+```java
+var tenant = AuthenticationTenantContextHolder.getContext().getAuthenticationTenant();
 ```
 
 ## Demo
