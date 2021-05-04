@@ -4,7 +4,7 @@ import org.springframework.util.Assert;
 
 public class ThreadLocalAuthenticationTenantContextHolderStrategy implements AuthenticationTenantContextHolderStrategy {
 
-    private ThreadLocal<AuthenticationTenantContext> contextHolder = new ThreadLocal<>();
+    private final ThreadLocal<AuthenticationTenantContext> contextHolder = new InheritableThreadLocal<>();
 
     ThreadLocalAuthenticationTenantContextHolderStrategy() {
 
@@ -34,7 +34,7 @@ public class ThreadLocalAuthenticationTenantContextHolderStrategy implements Aut
 
     @Override
     public void setContext(AuthenticationTenantContext context) {
-        Assert.notNull(context, "Only non-null AuthenticationContext instances are permitted");
+        Assert.notNull(context, "Only non-null AuthenticationTenantContext instances are permitted");
         contextHolder.set(context);
     }
 
