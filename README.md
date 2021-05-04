@@ -18,11 +18,13 @@ in Spring Boot configuration file ;)
 🚧 The project is currently in BETA. There can be lack of some features or some bugs may still appear. However, we do our best to continuously improve
 and develop the starter ;)
 
+**Latest version:** 1.0.1-beta
+
 ## Getting started!
 
 ### Include Maven dependency:
 
-If you want to use the starter in your project - just include proper dependency in your `pom.xml` file.
+If you want to use the starter in your project - just include proper dependency in your `pom.xml` file (it will automatically download dependencies from Maven Central Repository)
 ```xml
 <dependency>
   <groupId>io.mzlnk.springframework</groupId>
@@ -30,8 +32,6 @@ If you want to use the starter in your project - just include proper dependency 
   <version>1.0</version>
 </dependency>
 ```
-
-🚧 The jar file is not available on Maven Central Repository yet - it will be added in 1-2 days (just formal requirements left)
 
 #
 
