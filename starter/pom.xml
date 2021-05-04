@@ -6,7 +6,7 @@
 
     <groupId>io.mzlnk.springframework</groupId>
     <artifactId>multi-tenant-oauth2-resource-server-spring-boot-starter</artifactId>
-    <version>1.0</version>
+    <version>1.0-beta</version>
 
     <name>multi-tenant-oauth2-resource-server-spring-boot-starter</name>
     <description>Spring Boot starter for multi-tenant OAuth2 resource server</description>
