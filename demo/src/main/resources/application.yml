@@ -19,7 +19,7 @@ oauth2:
           token-type: OPAQUE
           issuer: "http://localhost:10003/auth/realms/auth-provider-3"
           client-id: oauth2-demo
-          client-secret: 4f8cdf09-24a1-4837-9cf1-19917b3b20bb
+          client-secret: XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
           introspect-uri: "http://localhost:10003/auth/realms/auth-provider-3/protocol/openid-connect/token/introspect"
           matchers:
             - type: COOKIE
