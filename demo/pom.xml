@@ -50,7 +50,7 @@
 
         <java.version>15</java.version>
 
-        <multi-tenant-oauth2-resource-server-spring-boot-starter.version>1.0</multi-tenant-oauth2-resource-server-spring-boot-starter.version>
+        <multi-tenant-oauth2-resource-server-spring-boot-starter.version>1.0.1-beta</multi-tenant-oauth2-resource-server-spring-boot-starter.version>
     </properties>
 
     <dependencies>
