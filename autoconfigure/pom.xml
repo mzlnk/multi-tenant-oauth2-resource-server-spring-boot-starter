@@ -6,7 +6,7 @@
 
     <groupId>io.mzlnk.springframework</groupId>
     <artifactId>multi-tenant-oauth2-resource-server-spring-boot-autoconfigure</artifactId>
-    <version>1.0.1-beta</version>
+    <version>1.0.2-beta</version>
     <packaging>jar</packaging>
 
     <name>multi-tenant-oauth2-resource-server-spring-boot-autoconfiguration</name>

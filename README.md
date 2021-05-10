@@ -18,7 +18,7 @@ in Spring Boot configuration file ;)
 🚧 The project is currently in BETA. There can be lack of some features or some bugs may still appear. However, we do our best to continuously improve
 and develop the starter ;)
 
-**Latest version:** 1.0.1-beta
+**Latest version:** 1.0.2-beta
 
 ## Getting started!
 
@@ -29,7 +29,7 @@ If you want to use the starter in your project - just include proper dependency 
 <dependency>
   <groupId>io.mzlnk.springframework</groupId>
   <artifactId>multi-tenant-oauth2-resource-server-spring-boot-starter</artifactId>
-  <version>1.0</version>
+  <version>1.0.2-beta</version>
 </dependency>
 ```
 

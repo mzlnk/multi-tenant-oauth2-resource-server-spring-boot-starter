@@ -18,8 +18,6 @@ public class PublicKeyJwtAuthenticationManagerResolver implements Authentication
     private final Map<String, AuthenticationManager> authenticationManagers;
 
     public PublicKeyJwtAuthenticationManagerResolver(Map<String, RSAPublicKey> issuersPublicKeys) {
-        Assert.notEmpty(issuersPublicKeys, "publicKeys cannot be empty");
-
         this.authenticationManagers = issuersPublicKeys.entrySet()
                 .stream()
                 .collect(Collectors.toConcurrentMap(this::retrieveIssuer, this::retrieveAuthenticationManager));
