@@ -1,7 +1,7 @@
 # Multi-Tenant OAuth2 Resource Server Spring Boot Starter
 
 [![Licence: MIT](https://img.shields.io/badge/Licence-MIT-blue.svg)](https://shields.io/)
-[![Version: BETA-1.0](https://img.shields.io/badge/version-1.0--beta-yellow.svg)](https://shields.io/)
+[![Version: BETA-1.0](https://img.shields.io/badge/version-1.0.3--beta-yellow.svg)](https://shields.io/)
 [![Java : 15](https://img.shields.io/badge/Java-15-orange.svg)](https://jdk.java.net/15/)
 [![Open Source](https://badges.frapsoft.com/os/v2/open-source.svg?v=103)](https://github.com/ellerbrock/open-source-badges/)
 
@@ -18,7 +18,7 @@ in Spring Boot configuration file ;)
 🚧 The project is currently in BETA. There can be lack of some features or some bugs may still appear. However, we do our best to continuously improve
 and develop the starter ;)
 
-**Latest version:** 1.0.2-beta
+**Latest version:** 1.0.3-beta
 
 ## Getting started!
 
@@ -29,7 +29,7 @@ If you want to use the starter in your project - just include proper dependency 
 <dependency>
   <groupId>io.mzlnk.springframework</groupId>
   <artifactId>multi-tenant-oauth2-resource-server-spring-boot-starter</artifactId>
-  <version>1.0.2-beta</version>
+  <version>1.0.3-beta</version>
 </dependency>
 ```
 
