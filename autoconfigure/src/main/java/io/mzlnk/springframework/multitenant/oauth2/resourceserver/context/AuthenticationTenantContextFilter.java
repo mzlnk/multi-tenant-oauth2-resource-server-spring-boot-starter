@@ -1,6 +1,7 @@
 package io.mzlnk.springframework.multitenant.oauth2.resourceserver.context;
 
 import io.mzlnk.springframework.multitenant.oauth2.resourceserver.resolver.MultitenantAuthenticationManagerResolver;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.introspection.OAuth2IntrospectionAuthenticatedPrincipal;
@@ -14,8 +15,12 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
 
+import static io.mzlnk.springframework.multitenant.oauth2.resourceserver.context.AuthenticationTenantContextFilter.ORDER;
+
+@Order(ORDER)
 public class AuthenticationTenantContextFilter extends OncePerRequestFilter {
 
+    public static final int ORDER = 4000;
     private final MultitenantAuthenticationManagerResolver resolver;
 
     public AuthenticationTenantContextFilter(MultitenantAuthenticationManagerResolver resolver) {

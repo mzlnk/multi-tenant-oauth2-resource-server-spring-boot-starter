@@ -52,7 +52,7 @@ public class JwtAuthenticationManagerResolver implements AuthenticationManagerRe
         }
 
         public JwtAuthenticationManagerResolver build() {
-            return new JwtAuthenticationManagerResolver(this.publicKeyResolver, this.trustedIssuerResolver);
+            return new JwtAuthenticationManagerResolver(this.trustedIssuerResolver, this.publicKeyResolver);
         }
 
     }
