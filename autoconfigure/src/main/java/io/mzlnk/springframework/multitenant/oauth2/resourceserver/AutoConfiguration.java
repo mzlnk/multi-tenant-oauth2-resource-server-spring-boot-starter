@@ -42,7 +42,6 @@ public class AutoConfiguration {
     }
 
     @Bean
-    @Order(1)
     public AuthenticationTenantContextFilter authenticationTenantContextFilter(MultitenantAuthenticationManagerResolver resolver) {
         return new AuthenticationTenantContextFilter(resolver);
     }
