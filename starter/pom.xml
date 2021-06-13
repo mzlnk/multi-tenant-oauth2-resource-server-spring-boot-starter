@@ -6,7 +6,7 @@
 
     <groupId>io.mzlnk.springframework</groupId>
     <artifactId>multi-tenant-oauth2-resource-server-spring-boot-starter</artifactId>
-    <version>1.0.3-beta</version>
+    <version>1.0.4-beta</version>
     <packaging>jar</packaging>
 
     <name>multi-tenant-oauth2-resource-server-spring-boot-starter</name>
@@ -68,7 +68,7 @@
         <maven.compiler.target>15</maven.compiler.target>
 
         <oauth2-oidc-sdk.version>6.23</oauth2-oidc-sdk.version>
-        <multi-tenant-oauth2-resource-server-spring-boot-autoconfigure.version>1.0.3-beta</multi-tenant-oauth2-resource-server-spring-boot-autoconfigure.version>
+        <multi-tenant-oauth2-resource-server-spring-boot-autoconfigure.version>1.0.4-beta</multi-tenant-oauth2-resource-server-spring-boot-autoconfigure.version>
     </properties>
 
     <dependencies>
