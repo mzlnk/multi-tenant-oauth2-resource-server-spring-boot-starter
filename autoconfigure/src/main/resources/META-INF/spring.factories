@@ -1,3 +1,4 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
   io.mzlnk.springframework.multitenant.oauth2.resourceserver.AutoConfiguration,\
-  io.mzlnk.springframework.multitenant.oauth2.resourceserver.FactoriesAutoConfiguration
+  io.mzlnk.springframework.multitenant.oauth2.resourceserver.FactoriesAutoConfiguration,\
+  io.mzlnk.springframework.multitenant.oauth2.resourceserver.resolver.token.TokenResolverAutoConfiguration

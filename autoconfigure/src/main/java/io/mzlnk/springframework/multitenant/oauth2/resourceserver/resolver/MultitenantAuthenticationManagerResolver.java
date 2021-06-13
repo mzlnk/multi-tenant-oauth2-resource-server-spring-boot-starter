@@ -4,6 +4,7 @@ import com.nimbusds.jwt.JWTParser;
 import io.mzlnk.springframework.multitenant.oauth2.resourceserver.properties.AuthenticationProviderProperties;
 import io.mzlnk.springframework.multitenant.oauth2.resourceserver.properties.TokenType;
 import io.mzlnk.springframework.multitenant.oauth2.resourceserver.resolver.jwt.JwtAuthenticationManagerResolver;
+import io.mzlnk.springframework.multitenant.oauth2.resourceserver.resolver.token.TokenResolver;
 import io.mzlnk.springframework.multitenant.oauth2.resourceserver.tenant.AuthenticationTenant;
 import io.mzlnk.springframework.multitenant.oauth2.resourceserver.tenant.AuthenticationTenantFactory;
 import io.mzlnk.springframework.multitenant.oauth2.resourceserver.tenant.JwtAuthenticationTenant;
@@ -33,16 +34,18 @@ public class MultitenantAuthenticationManagerResolver implements AuthenticationM
     private final Map<String, AuthenticationProvider> opaqueProviders;
     private final JwtAuthenticationManagerResolver jwtResolver;
 
-    private final BearerTokenResolver tokenResolver = new DefaultBearerTokenResolver();
+    private final TokenResolver tokenResolver;
 
     public MultitenantAuthenticationManagerResolver(AuthenticationProviderProperties tenantsProperties,
                                                     List<AuthenticationTenantMatcher> externalMatchers,
-                                                    AuthenticationTenantFactory tenantFactory) {
+                                                    AuthenticationTenantFactory tenantFactory,
+                                                    TokenResolver tokenResolver) {
 
         this.tenants = tenantFactory.create(tenantsProperties.getTenants(), externalMatchers);
         this.tenantsByIssuer = this.tenants.stream().collect(Collectors.toMap(AuthenticationTenant::getIssuer, a -> a));
         this.opaqueProviders = opaqueTokenAuthenticationProviders();
         this.jwtResolver = jwtResolver();
+        this.tokenResolver = tokenResolver;
     }
 
     @Override
