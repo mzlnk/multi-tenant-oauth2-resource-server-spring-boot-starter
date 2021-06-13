@@ -2,6 +2,7 @@ package io.mzlnk.springframework.multitenant.oauth2.resourceserver;
 
 import io.mzlnk.springframework.multitenant.oauth2.resourceserver.properties.AuthenticationProviderProperties;
 import io.mzlnk.springframework.multitenant.oauth2.resourceserver.resolver.MultitenantAuthenticationManagerResolver;
+import io.mzlnk.springframework.multitenant.oauth2.resourceserver.resolver.token.TokenResolver;
 import io.mzlnk.springframework.multitenant.oauth2.resourceserver.tenant.AuthenticationTenant;
 import io.mzlnk.springframework.multitenant.oauth2.resourceserver.tenant.matcher.AuthenticationTenantMatcher;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -37,8 +38,9 @@ public class AutoConfiguration {
     @Bean
     public MultitenantAuthenticationManagerResolver multitenantAuthenticationManagerResolver(AuthenticationProviderProperties properties,
                                                                                              List<AuthenticationTenantMatcher> matchers,
-                                                                                             AuthenticationTenantFactory tenantFactory) {
-        return new MultitenantAuthenticationManagerResolver(properties, matchers, tenantFactory);
+                                                                                             AuthenticationTenantFactory tenantFactory,
+                                                                                             TokenResolver tokenResolver) {
+        return new MultitenantAuthenticationManagerResolver(properties, matchers, tenantFactory, tokenResolver);
     }
 
     @Bean
