@@ -1,7 +1,7 @@
 # Multi-Tenant OAuth2 Resource Server Spring Boot Starter
 
 [![Licence: MIT](https://img.shields.io/badge/Licence-MIT-blue.svg)](https://shields.io/)
-[![Version: BETA-1.0](https://img.shields.io/badge/version-1.0.3--beta-yellow.svg)](https://shields.io/)
+[![Version: BETA-1.0.4](https://img.shields.io/badge/version-1.0.4--beta-yellow.svg)](https://shields.io/)
 [![Java : 15](https://img.shields.io/badge/Java-15-orange.svg)](https://jdk.java.net/15/)
 [![Open Source](https://badges.frapsoft.com/os/v2/open-source.svg?v=103)](https://github.com/ellerbrock/open-source-badges/)
 
@@ -18,7 +18,7 @@ in Spring Boot configuration file ;)
 🚧 The project is currently in BETA. There can be lack of some features or some bugs may still appear. However, we do our best to continuously improve
 and develop the starter ;)
 
-**Latest version:** 1.0.3-beta
+**Latest version:** 1.0.4-beta
 
 ## Getting started!
 
@@ -29,7 +29,7 @@ If you want to use the starter in your project - just include proper dependency 
 <dependency>
   <groupId>io.mzlnk.springframework</groupId>
   <artifactId>multi-tenant-oauth2-resource-server-spring-boot-starter</artifactId>
-  <version>1.0.3-beta</version>
+  <version>1.0.4-beta</version>
 </dependency>
 ```
 
@@ -59,6 +59,23 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
 }
+```
+
+#
+
+### Configure how tokens will be resolved
+
+You can decide how tokens should be resolved from HTTP request passed to your application. By default, the token is resolved from `Authorization` header, however you can
+determine that the resource server should read the token from the certain cookie, for instance. To do so, you have to add additional property in `application.yml` configuration file.
+
+As for now, there is only one additional way (different from the default one) to resolve token - from the cookie with given name:
+```yaml
+oauth2:
+  resource:
+    server:
+      token-resolver:
+        type: COOKIE
+        cookie-name: [YOUR_COOKIE_NAME_HERE]
 ```
 
 #

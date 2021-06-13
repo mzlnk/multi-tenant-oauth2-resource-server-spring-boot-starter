@@ -12,7 +12,7 @@
 
     <groupId>io.mzlnk.springframework</groupId>
     <artifactId>multi-tenant-oauth2-resource-server-spring-boot-starter-demo</artifactId>
-    <version>1.0.3-beta</version>
+    <version>1.0.4-beta</version>
 
     <name>multi-tenant-oauth2-resource-server-spring-boot-starter-demo</name>
     <description>Sample demo for multi-tenant OAuth2 resource server Spring Boot starter</description>
@@ -50,7 +50,7 @@
 
         <java.version>15</java.version>
 
-        <multi-tenant-oauth2-resource-server-spring-boot-starter.version>1.0.3-beta</multi-tenant-oauth2-resource-server-spring-boot-starter.version>
+        <multi-tenant-oauth2-resource-server-spring-boot-starter.version>1.0.4-beta</multi-tenant-oauth2-resource-server-spring-boot-starter.version>
     </properties>
 
     <dependencies>
