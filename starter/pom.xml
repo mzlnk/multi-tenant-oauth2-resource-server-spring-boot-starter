@@ -64,8 +64,8 @@
     </parent>
 
     <properties>
-        <maven.compiler.source>15</maven.compiler.source>
-        <maven.compiler.target>15</maven.compiler.target>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
 
         <oauth2-oidc-sdk.version>6.23</oauth2-oidc-sdk.version>
         <multi-tenant-oauth2-resource-server-spring-boot-autoconfigure.version>1.0.4-beta</multi-tenant-oauth2-resource-server-spring-boot-autoconfigure.version>

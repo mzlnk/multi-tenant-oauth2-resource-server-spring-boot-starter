@@ -60,8 +60,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <maven.compiler.source>15</maven.compiler.source>
-        <maven.compiler.target>15</maven.compiler.target>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
 
         <spring-security-oauth2-resource-server.version>5.4.6</spring-security-oauth2-resource-server.version>
         <oauth2-oidc-sdk.version>6.23</oauth2-oidc-sdk.version>
