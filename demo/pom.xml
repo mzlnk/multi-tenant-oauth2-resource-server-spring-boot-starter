@@ -45,10 +45,10 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
+        <maven.compiler.source>15</maven.compiler.source>
+        <maven.compiler.target>15</maven.compiler.target>
 
-        <java.version>8</java.version>
+        <java.version>15</java.version>
 
         <multi-tenant-oauth2-resource-server-spring-boot-starter.version>1.0.4-beta</multi-tenant-oauth2-resource-server-spring-boot-starter.version>
     </properties>
