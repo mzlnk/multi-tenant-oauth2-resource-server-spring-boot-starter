@@ -42,12 +42,14 @@ public class JwtAuthenticationManagerResolver implements AuthenticationManagerRe
         private AuthenticationManagerResolver<HttpServletRequest> trustedIssuerResolver;
 
         public Builder withPublicKeyResolver(Map<String, RSAPublicKey> publicKeys) {
-            this.publicKeyResolver = new JwtIssuerAuthenticationManagerResolver(new PublicKeyJwtAuthenticationManagerResolver(publicKeys));
+            if (publicKeys != null && !publicKeys.isEmpty())
+                this.publicKeyResolver = new JwtIssuerAuthenticationManagerResolver(new PublicKeyJwtAuthenticationManagerResolver(publicKeys));
             return this;
         }
 
         public Builder withTrustedIssuerResolver(Collection<String> trustedIssuers) {
-            this.trustedIssuerResolver = new JwtIssuerAuthenticationManagerResolver(trustedIssuers);
+            if (trustedIssuers != null && !trustedIssuers.isEmpty())
+                this.trustedIssuerResolver = new JwtIssuerAuthenticationManagerResolver(trustedIssuers);
             return this;
         }
 
